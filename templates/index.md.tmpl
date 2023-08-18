@@ -1,0 +1,26 @@
+---
+page_title: "Provider: Genesis Cloud"
+subcategory: ""
+description: |-
+{{ .Description | plainmarkdown | trimspace | prefixlines "  " }}
+---
+
+# Genesis Cloud Provider
+
+{{ .Description | trimspace }}
+
+- [API Documentation](https://developers.genesiscloud.com/)
+- [How to generate an API token?](https://support.genesiscloud.com/support/solutions/articles/47001126146-how-to-generate-an-api-token-)
+
+The [provider repository](https://github.com/genesiscloud/terraform-provider-genesiscloud) is licensed under Mozilla Public License 2.0 (no copyleft exception) (see [LICENSE.txt](https://github.com/genesiscloud/terraform-provider-genesiscloud/blob/main/LICENSE.txt)) and includes third-party code subject to third-party notices (see [THIRD-PARTY-NOTICES.txt](https://github.com/genesiscloud/terraform-provider-genesiscloud/blob/main/THIRD-PARTY-NOTICES.txt)).
+
+## Example Usage
+
+- Create a Genesis Cloud account
+- Create a API token (see above)
+- Set the `GENESISCLOUD_TOKEN` env var or specify the `token` in the provider
+- Make sure to set the version in the provider
+
+{{tffile "examples/provider/provider.tf"}}
+
+{{ .SchemaMarkdown | trimspace }}
