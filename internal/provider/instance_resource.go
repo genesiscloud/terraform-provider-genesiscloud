@@ -95,7 +95,7 @@ func (r *InstanceResource) Schema(ctx context.Context, req resource.SchemaReques
 					"startup_script": resourceenhancer.Attribute(ctx, schema.StringAttribute{
 						MarkdownDescription: "A plain text bash script or \"cloud-config\" file that will be executed after the first instance boot. " +
 							"It is limited to 64 KiB in size. You can use it to configure your instance, e.g. installing the NVIDIA GPU driver. " +
-							"Learn more about [startup scripts and installing the GPU driver](https://support.com/support/solutions/articles/47001122478).",
+							"Learn more about [startup scripts and installing the GPU driver](https://support.genesiscloud.com/support/solutions/articles/47001122478).",
 						Optional: true,
 						PlanModifiers: []planmodifier.String{
 							stringplanmodifier.RequiresReplace(),
