@@ -19,7 +19,7 @@ type timeDurationPositiveValidator struct {
 
 // Description describes the validation in plain text formatting.
 func (validator timeDurationPositiveValidator) Description(_ context.Context) string {
-	return `string must be a positive [time duration](https://pkg.go.dev/time#ParseDuration) for example "10s"`
+	return `string must be a positive [time duration](https://pkg.go.dev/time#ParseDuration), for example "10s"`
 }
 
 // MarkdownDescription describes the validation in Markdown formatting.

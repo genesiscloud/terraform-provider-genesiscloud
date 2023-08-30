@@ -17,7 +17,7 @@ The [provider repository](https://github.com/genesiscloud/terraform-provider-gen
 ## Example Usage
 
 - Create a Genesis Cloud account
-- Create a API token (see above)
+- Create an API token (see above)
 - Set the `GENESISCLOUD_TOKEN` env var or specify the `token` in the provider
 - Make sure to set the version in the provider
 
@@ -140,5 +140,5 @@ output "connect" {
 
 - `endpoint` (String) Genesis Cloud API endpoint. May also be provided via `GENESISCLOUD_ENDPOINT` environment variable. If neither is provided, defaults to `https://api.genesiscloud.com`.
 - `polling_interval` (String) The polling interval.
-  - The string must be a positive [time duration](https://pkg.go.dev/time#ParseDuration) for example "10s".
+  - The string must be a positive [time duration](https://pkg.go.dev/time#ParseDuration), for example "10s".
 - `token` (String, Sensitive) Genesis Cloud API token. May also be provided via `GENESISCLOUD_TOKEN` environment variable.
