@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/genesiscloud/genesiscloud-go v1.0.0-rc.1
-	github.com/hashicorp/go-retryablehttp v0.7.2
+	github.com/hashicorp/go-retryablehttp v0.7.4
 	github.com/hashicorp/terraform-plugin-docs v0.13.0
 	github.com/hashicorp/terraform-plugin-framework v1.1.1
 	github.com/hashicorp/terraform-plugin-framework-timeouts v0.3.1
