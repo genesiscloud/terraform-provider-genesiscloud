@@ -39,9 +39,9 @@ type ImagesFilterDataSourceModel struct {
 
 // ImagesDataSourceModel describes the data source data model.
 type ImagesDataSourceModel struct {
-	Filter *ImagesFilterDataSourceModel `tfsdk:"filter"`
-	Images []ImageModel                 `tfsdk:"images"`
-	Id     types.String                 `tfsdk:"id"` // placeholder
+	Filter ImagesFilterDataSourceModel `tfsdk:"filter"`
+	Images []ImageModel                `tfsdk:"images"`
+	Id     types.String                `tfsdk:"id"` // placeholder
 
 	// Internal
 
@@ -60,11 +60,11 @@ func (d *ImagesDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 
 		Attributes: map[string]schema.Attribute{
 			"filter": schema.SingleNestedAttribute{
-				Optional: true,
+				Required: true,
 				Attributes: map[string]schema.Attribute{
 					"type": datasourceenhancer.Attribute(ctx, schema.StringAttribute{
 						MarkdownDescription: "Filter by the kind of image.",
-						Optional:            true,
+						Required:            true,
 						Validators: []validator.String{
 							stringvalidator.OneOf(sliceStringify(genesiscloud.AllComputeV1ImageTypes)...),
 						},
@@ -133,15 +133,11 @@ func (d *ImagesDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 	}
 	defer cancel()
 
-	var filterType *genesiscloud.ComputeV1ImageType
-
-	if data.Filter != nil && !data.Filter.Type.IsNull() && !data.Filter.Type.IsUnknown() {
-		filterType = pointer(genesiscloud.ComputeV1ImageType(data.Filter.Type.ValueString()))
-	}
+	filterType := pointer(genesiscloud.ComputeV1ImageType(data.Filter.Type.ValueString()))
 
 	var filterRegion *genesiscloud.ComputeV1Region
 
-	if data.Filter != nil && !data.Filter.Region.IsNull() && !data.Filter.Region.IsUnknown() {
+	if !data.Filter.Region.IsNull() && !data.Filter.Region.IsUnknown() {
 		filterRegion = pointer(genesiscloud.ComputeV1Region(data.Filter.Region.ValueString()))
 	}
 

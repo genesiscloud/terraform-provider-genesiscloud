@@ -1,5 +1,3 @@
-data "genesiscloud_images" "all-images" {}
-
 data "genesiscloud_images" "base-os-images" {
   filter = {
     type = "base-os"

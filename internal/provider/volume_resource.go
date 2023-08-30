@@ -209,7 +209,7 @@ func (r *VolumeResource) Create(ctx context.Context, req resource.CreateRequest,
 		}
 
 		status := volumeResponse.Volume.Status
-		if status == "available" || status == "error" {
+		if status == "created" || status == "available" || status == "in-use" || status == "error" {
 			resp.Diagnostics.Append(data.PopulateFromClientResponse(ctx, &volumeResponse.Volume)...)
 			if resp.Diagnostics.HasError() {
 				return
