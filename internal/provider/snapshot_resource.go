@@ -197,7 +197,7 @@ func (r *SnapshotResource) Create(ctx context.Context, req resource.CreateReques
 		}
 
 		status := snapshotResponse.Snapshot.Status
-		if status == "active" || status == "error" {
+		if status == "created" || status == "active" || status == "error" {
 			resp.Diagnostics.Append(data.PopulateFromClientResponse(ctx, &snapshotResponse.Snapshot)...)
 			if resp.Diagnostics.HasError() {
 				return
