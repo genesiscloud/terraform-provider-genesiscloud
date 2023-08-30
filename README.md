@@ -2,7 +2,7 @@
 
 The Genesis Cloud provider is used to interact with resources supported by [Genesis Cloud](https://www.genesiscloud.com/). The provider needs to be configured with the proper credentials before it can be used.
 
-- [Documentation](https://www.terraform.io/docs/providers/genesiscloud/index.html)
+- [Documentation](https://registry.terraform.io/providers/genesiscloud/genesiscloud/latest/docs)
 - [Genesis Cloud API Documentation](https://developers.genesiscloud.com/)
 - [How to generate an API token?](https://support.genesiscloud.com/support/solutions/articles/47001126146-how-to-generate-an-api-token-)
 - [Terraform Website](https://www.terraform.io)
