@@ -31,7 +31,7 @@ type VolumeModel struct {
 	Status types.String `tfsdk:"status"`
 }
 
-func (data *VolumeModel) PopulateFromClientResponse(ctx context.Context, volume *genesiscloud.ComputeV1Volume) (diag diag.Diagnostics) {
+func (data *VolumeModel) PopulateFromClientResponse(ctx context.Context, volume *genesiscloud.Volume) (diag diag.Diagnostics) {
 	data.CreatedAt = types.StringValue(volume.CreatedAt.Format(time.RFC3339))
 	data.Description = types.StringValue(volume.Description)
 	data.Id = types.StringValue(volume.Id)

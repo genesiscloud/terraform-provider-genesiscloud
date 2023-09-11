@@ -66,14 +66,14 @@ func (d *ImagesDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 						MarkdownDescription: "Filter by the kind of image.",
 						Required:            true,
 						Validators: []validator.String{
-							stringvalidator.OneOf(sliceStringify(genesiscloud.AllComputeV1ImageTypes)...),
+							stringvalidator.OneOf(sliceStringify(genesiscloud.AllImageTypes)...),
 						},
 					}),
 					"region": datasourceenhancer.Attribute(ctx, schema.StringAttribute{
 						MarkdownDescription: "Filter by the region identifier.",
 						Optional:            true,
 						Validators: []validator.String{
-							stringvalidator.OneOf(sliceStringify(genesiscloud.AllComputeV1Regions)...),
+							stringvalidator.OneOf(sliceStringify(genesiscloud.AllRegions)...),
 						},
 					}),
 				},
@@ -133,12 +133,12 @@ func (d *ImagesDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 	}
 	defer cancel()
 
-	filterType := pointer(genesiscloud.ComputeV1ImageType(data.Filter.Type.ValueString()))
+	filterType := pointer(genesiscloud.ImageType(data.Filter.Type.ValueString()))
 
-	var filterRegion *genesiscloud.ComputeV1Region
+	var filterRegion *genesiscloud.Region
 
 	if !data.Filter.Region.IsNull() && !data.Filter.Region.IsUnknown() {
-		filterRegion = pointer(genesiscloud.ComputeV1Region(data.Filter.Region.ValueString()))
+		filterRegion = pointer(genesiscloud.Region(data.Filter.Region.ValueString()))
 	}
 
 	for page := 1; ; page++ {

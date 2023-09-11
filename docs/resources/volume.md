@@ -28,7 +28,7 @@ resource "genesiscloud_volume" "example" {
 - `name` (String) The human-readable name for the volume.
 - `region` (String) The region identifier.
   - If the value of this attribute changes, Terraform will destroy and recreate the resource.
-  - The value must be one of: [`ARC-IS-HAF-1` `NORD-NO-KRS-1`].
+  - The value must be one of: [`ARC-IS-HAF-1` `EUC-DE-MUC-1` `NORD-NO-KRS-1`].
 - `size` (Number) The storage size of this volume given in GiB.
   - If the value of this attribute changes, Terraform will destroy and recreate the resource.
   - The value must be at least 1.

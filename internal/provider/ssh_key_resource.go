@@ -200,7 +200,7 @@ func (r *SSHKeyResource) Update(ctx context.Context, req resource.UpdateRequest,
 
 	body := genesiscloud.UpdateSSHKeyJSONRequestBody{}
 
-	body.Name = data.Name.ValueString()
+	body.Name = pointer(data.Name.ValueString())
 
 	sshKeyId := data.Id.ValueString()
 

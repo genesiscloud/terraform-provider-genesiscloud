@@ -11,7 +11,7 @@ import (
 type ErrorResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
-	Error        *genesiscloud.ComputeV1Error
+	Error        *genesiscloud.Error
 }
 
 var ErrResourceInErrorState = errors.New("the resource is in error state")

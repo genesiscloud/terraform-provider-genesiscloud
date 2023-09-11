@@ -73,16 +73,16 @@ type InstanceModel struct {
 	VolumeIds types.Set `tfsdk:"volume_ids"`
 }
 
-func (data *InstanceModel) PopulateFromClientResponse(ctx context.Context, instance *genesiscloud.ComputeV1Instance) (diag diag.Diagnostics) {
+func (data *InstanceModel) PopulateFromClientResponse(ctx context.Context, instance *genesiscloud.Instance) (diag diag.Diagnostics) {
 	data.Id = types.StringValue(instance.Id)
 	data.Name = types.StringValue(instance.Name)
 	data.Hostname = types.StringValue(instance.Hostname)
 	data.Type = types.StringValue(string(instance.Type))
-	data.ImageId = types.StringValue(*instance.Image.Id)
+	data.ImageId = types.StringValue(instance.Image.Id)
 
 	volumeIds := make([]string, 0) // volumes do NOT support NULL
 	for _, volume := range instance.Volumes {
-		volumeIds = append(volumeIds, *volume.Id)
+		volumeIds = append(volumeIds, volume.Id)
 	}
 	data.VolumeIds, diag = types.SetValueFrom(ctx, types.StringType, volumeIds)
 	if diag.HasError() {
@@ -91,7 +91,7 @@ func (data *InstanceModel) PopulateFromClientResponse(ctx context.Context, insta
 
 	securityGroupIds := make([]string, 0) // security groups do NOT support NULL
 	for _, securityGroup := range instance.SecurityGroups {
-		securityGroupIds = append(securityGroupIds, *securityGroup.Id)
+		securityGroupIds = append(securityGroupIds, securityGroup.Id)
 	}
 	data.SecurityGroupIds, diag = types.SetValueFrom(ctx, types.StringType, securityGroupIds)
 	if diag.HasError() {
@@ -100,7 +100,7 @@ func (data *InstanceModel) PopulateFromClientResponse(ctx context.Context, insta
 
 	var sshKeyIds []string // ssh-keys do support NULL
 	for _, sshKey := range instance.SshKeys {
-		sshKeyIds = append(sshKeyIds, *sshKey.Id)
+		sshKeyIds = append(sshKeyIds, sshKey.Id)
 	}
 	data.SshKeyIds, diag = types.SetValueFrom(ctx, types.StringType, sshKeyIds)
 	if diag.HasError() {
@@ -108,8 +108,8 @@ func (data *InstanceModel) PopulateFromClientResponse(ctx context.Context, insta
 	}
 
 	data.PlacementOption = types.StringValue(string(instance.PlacementOption))
-	data.PrivateIp = types.StringValue(instance.PrivateIp)
-	data.PublicIp = types.StringValue(instance.PublicIp)
+	data.PrivateIp = types.StringValue(*instance.PrivateIp)
+	data.PublicIp = types.StringValue(*instance.PublicIp)
 	data.PublicIpType = types.StringValue(string(instance.PublicIpType))
 	data.Region = types.StringValue(string(instance.Region))
 	data.Status = types.StringValue(string(instance.Status))

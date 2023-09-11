@@ -89,7 +89,7 @@ func (r *SecurityGroupResource) Schema(ctx context.Context, req resource.SchemaR
 					stringplanmodifier.RequiresReplace(),
 				},
 				Validators: []validator.String{
-					stringvalidator.OneOf(sliceStringify(genesiscloud.AllComputeV1Regions)...),
+					stringvalidator.OneOf(sliceStringify(genesiscloud.AllRegions)...),
 				},
 			}),
 			"rules": schema.ListNestedAttribute{
@@ -100,7 +100,7 @@ func (r *SecurityGroupResource) Schema(ctx context.Context, req resource.SchemaR
 							MarkdownDescription: "The direction of the rule.",
 							Required:            true,
 							Validators: []validator.String{
-								stringvalidator.OneOf(sliceStringify(genesiscloud.AllComputeV1SecurityGroupRuleDirections)...),
+								stringvalidator.OneOf(sliceStringify(genesiscloud.AllSecurityGroupRuleDirections)...),
 							},
 						}),
 						"port_range_max": resourceenhancer.Attribute(ctx, schema.Int64Attribute{
@@ -121,7 +121,7 @@ func (r *SecurityGroupResource) Schema(ctx context.Context, req resource.SchemaR
 							MarkdownDescription: "The protocol of the rule.",
 							Required:            true,
 							Validators: []validator.String{
-								stringvalidator.OneOf(sliceStringify(genesiscloud.AllComputeV1SecurityGroupRuleProtocols)...),
+								stringvalidator.OneOf(sliceStringify(genesiscloud.AllSecurityGroupRuleProtocols)...),
 							},
 						}),
 					},
@@ -170,7 +170,7 @@ func (r *SecurityGroupResource) Create(ctx context.Context, req resource.CreateR
 
 	body.Description = pointer(data.Description.ValueString())
 	body.Name = data.Name.ValueString()
-	body.Region = pointer(genesiscloud.ComputeV1Region(data.Region.ValueString()))
+	body.Region = genesiscloud.Region(data.Region.ValueString())
 
 	for _, rule := range data.Rules {
 		var portRangeMax, portRangeMin *int
@@ -183,11 +183,11 @@ func (r *SecurityGroupResource) Create(ctx context.Context, req resource.CreateR
 			portRangeMin = pointer(int(rule.PortRangeMin.ValueInt64()))
 		}
 
-		body.Rules = append(body.Rules, genesiscloud.ComputeV1SecurityGroupRule{
-			Direction:    genesiscloud.ComputeV1SecurityGroupRuleDirection(rule.Direction.ValueString()),
+		body.Rules = append(body.Rules, genesiscloud.SecurityGroupRule{
+			Direction:    genesiscloud.SecurityGroupRuleDirection(rule.Direction.ValueString()),
 			PortRangeMax: portRangeMax,
 			PortRangeMin: portRangeMin,
-			Protocol:     genesiscloud.ComputeV1SecurityGroupRuleProtocol(rule.Protocol.ValueString()),
+			Protocol:     genesiscloud.SecurityGroupRuleProtocol(rule.Protocol.ValueString()),
 		})
 	}
 
@@ -332,7 +332,7 @@ func (r *SecurityGroupResource) Update(ctx context.Context, req resource.UpdateR
 	body := genesiscloud.UpdateSecurityGroupJSONRequestBody{}
 
 	body.Description = pointer(data.Description.ValueString())
-	body.Name = data.Name.ValueString()
+	body.Name = pointer(data.Name.ValueString())
 	for _, rule := range data.Rules {
 		var portRangeMax, portRangeMin *int
 
@@ -344,11 +344,11 @@ func (r *SecurityGroupResource) Update(ctx context.Context, req resource.UpdateR
 			portRangeMin = pointer(int(rule.PortRangeMin.ValueInt64()))
 		}
 
-		body.Rules = append(body.Rules, genesiscloud.ComputeV1SecurityGroupRule{
-			Direction:    genesiscloud.ComputeV1SecurityGroupRuleDirection(rule.Direction.ValueString()),
+		*body.Rules = append(*body.Rules, genesiscloud.SecurityGroupRule{
+			Direction:    genesiscloud.SecurityGroupRuleDirection(rule.Direction.ValueString()),
 			PortRangeMax: portRangeMax,
 			PortRangeMin: portRangeMin,
-			Protocol:     genesiscloud.ComputeV1SecurityGroupRuleProtocol(rule.Protocol.ValueString()),
+			Protocol:     genesiscloud.SecurityGroupRuleProtocol(rule.Protocol.ValueString()),
 		})
 	}
 

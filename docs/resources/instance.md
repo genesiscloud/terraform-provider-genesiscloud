@@ -36,10 +36,9 @@ resource "genesiscloud_instance" "example" {
 - `name` (String) The human-readable name for the instance.
 - `region` (String) The region identifier.
   - If the value of this attribute changes, Terraform will destroy and recreate the resource.
-  - The value must be one of: [`ARC-IS-HAF-1` `NORD-NO-KRS-1`].
-- `type` (String) The instance type identifier.
+  - The value must be one of: [`ARC-IS-HAF-1` `EUC-DE-MUC-1` `NORD-NO-KRS-1`].
+- `type` (String) The instance type identifier.[Learn more about instance types here](https://developers.genesiscloud.com/instances#instance-types)
   - If the value of this attribute changes, Terraform will destroy and recreate the resource.
-  - The value must be one of: [`vcpu-12_memory-24g_disk-80g` `vcpu-12_memory-36g_disk-80g_nvidia1080ti-3` `vcpu-12_memory-36g_disk-80g_nvidia3060ti-3` `vcpu-12_memory-36g_disk-80g_nvidia3080-3` `vcpu-12_memory-72g_disk-80g_nvidia3090-3` `vcpu-16_memory-32g_disk-80g` `vcpu-16_memory-48g_disk-80g_nvidia1080ti-4` `vcpu-16_memory-48g_disk-80g_nvidia3060ti-4` `vcpu-16_memory-48g_disk-80g_nvidia3080-4` `vcpu-16_memory-64g_disk-80g_nvidia3080-2` `vcpu-16_memory-96g_disk-80g_nvidia3090-2` `vcpu-16_memory-96g_disk-80g_nvidia3090-4` `vcpu-20_memory-120g_disk-80g_nvidia3090-5` `vcpu-20_memory-40g_disk-80g` `vcpu-20_memory-60g_disk-80g_nvidia1080ti-5` `vcpu-20_memory-60g_disk-80g_nvidia3060ti-5` `vcpu-20_memory-60g_disk-80g_nvidia3080-5` `vcpu-24_memory-144g_disk-80g_nvidia3090-3` `vcpu-24_memory-144g_disk-80g_nvidia3090-6` `vcpu-24_memory-48g_disk-80g` `vcpu-24_memory-72g_disk-80g_nvidia1080ti-6` `vcpu-24_memory-72g_disk-80g_nvidia3060ti-6` `vcpu-24_memory-72g_disk-80g_nvidia3080-6` `vcpu-24_memory-96g_disk-80g_nvidia3080-3` `vcpu-28_memory-168g_disk-80g_nvidia3090-7` `vcpu-28_memory-84g_disk-80g_nvidia1080ti-7` `vcpu-28_memory-84g_disk-80g_nvidia3060ti-7` `vcpu-28_memory-84g_disk-80g_nvidia3080-7` `vcpu-2_memory-4g_disk-80g` `vcpu-2_memory-8g_disk-80g_amdrx470-4` `vcpu-2_memory-8g_disk-80g_amdrx470-5` `vcpu-2_memory-8g_disk-80g_amdrx470-6` `vcpu-2_memory-8g_disk-80g_amdrx470-7` `vcpu-2_memory-8g_disk-80g_amdrx470-8` `vcpu-32_memory-128g_disk-80g_nvidia3080-4` `vcpu-32_memory-192g_disk-80g_nvidia3090-4` `vcpu-32_memory-192g_disk-80g_nvidia3090-8` `vcpu-32_memory-96g_disk-80g_nvidia1080ti-8` `vcpu-32_memory-96g_disk-80g_nvidia3060ti-8` `vcpu-32_memory-96g_disk-80g_nvidia3080-8` `vcpu-4_memory-12g_disk-80g_nvidia1080ti-1` `vcpu-4_memory-12g_disk-80g_nvidia3060ti-1` `vcpu-4_memory-12g_disk-80g_nvidia3080-1` `vcpu-4_memory-24g_disk-80g_nvidia3090-1` `vcpu-4_memory-8g_disk-80g` `vcpu-8_memory-16g_disk-80g` `vcpu-8_memory-24g_disk-80g_nvidia1080ti-2` `vcpu-8_memory-24g_disk-80g_nvidia3060ti-2` `vcpu-8_memory-24g_disk-80g_nvidia3080-2` `vcpu-8_memory-32g_disk-80g_nvidia3080-1` `vcpu-8_memory-48g_disk-80g_nvidia3090-1` `vcpu-8_memory-48g_disk-80g_nvidia3090-2`].
 
 ### Optional
 
@@ -52,7 +51,6 @@ resource "genesiscloud_instance" "example" {
 - `placement_option` (String) The placement option identifier in which instances are physically located relative to each other within a zone.
   - If the value of this attribute changes, Terraform will destroy and recreate the resource.
   - Sets the default value `AUTO` if the attribute is not set.
-  - The value must be one of: [`A` `AUTO` `B`].
 - `public_ip_type` (String) When set to `static`, the instance's public IP will not change between start and stop actions.
   - If the value of this attribute changes, Terraform will destroy and recreate the resource.
   - Sets the default value `dynamic` if the attribute is not set.

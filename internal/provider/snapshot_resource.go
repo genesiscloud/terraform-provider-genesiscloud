@@ -280,7 +280,7 @@ func (r *SnapshotResource) Update(ctx context.Context, req resource.UpdateReques
 
 	body := genesiscloud.UpdateSnapshotJSONRequestBody{}
 
-	body.Name = data.Name.ValueString()
+	body.Name = pointer(data.Name.ValueString())
 
 	snapshotId := data.Id.ValueString()
 

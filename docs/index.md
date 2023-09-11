@@ -138,7 +138,7 @@ output "connect" {
 
 ### Optional
 
-- `endpoint` (String) Genesis Cloud API endpoint. May also be provided via `GENESISCLOUD_ENDPOINT` environment variable. If neither is provided, defaults to `https://api.genesiscloud.com`.
+- `endpoint` (String) Genesis Cloud API endpoint. May also be provided via `GENESISCLOUD_ENDPOINT` environment variable. If neither is provided, defaults to `https://api.genesiscloud.com/compute/v1`.
 - `polling_interval` (String) The polling interval.
   - The string must be a positive [time duration](https://pkg.go.dev/time#ParseDuration), for example "10s".
 - `token` (String, Sensitive) Genesis Cloud API token. May also be provided via `GENESISCLOUD_TOKEN` environment variable.

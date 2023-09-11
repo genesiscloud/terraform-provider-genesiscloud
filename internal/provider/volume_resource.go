@@ -93,7 +93,7 @@ func (r *VolumeResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					stringplanmodifier.RequiresReplace(),
 				},
 				Validators: []validator.String{
-					stringvalidator.OneOf(sliceStringify(genesiscloud.AllComputeV1Regions)...),
+					stringvalidator.OneOf(sliceStringify(genesiscloud.AllRegions)...),
 				},
 			}),
 			"size": resourceenhancer.Attribute(ctx, schema.Int64Attribute{
@@ -147,9 +147,9 @@ func (r *VolumeResource) Create(ctx context.Context, req resource.CreateRequest,
 
 	body := genesiscloud.CreateVolumeJSONRequestBody{}
 
-	body.Description = data.Description.ValueString()
+	body.Description = pointer(data.Description.ValueString())
 	body.Name = data.Name.ValueString()
-	body.Region = pointer(genesiscloud.ComputeV1Region(data.Region.ValueString()))
+	body.Region = genesiscloud.Region(data.Region.ValueString())
 	body.Size = int(data.Size.ValueInt64())
 
 	response, err := r.client.CreateVolumeWithResponse(ctx, body)
@@ -292,8 +292,8 @@ func (r *VolumeResource) Update(ctx context.Context, req resource.UpdateRequest,
 
 	body := genesiscloud.UpdateVolumeJSONRequestBody{}
 
-	body.Name = data.Name.ValueString()
-	body.Description = data.Description.ValueString()
+	body.Name = pointer(data.Name.ValueString())
+	body.Description = pointer(data.Description.ValueString())
 
 	volumeId := data.Id.ValueString()
 
