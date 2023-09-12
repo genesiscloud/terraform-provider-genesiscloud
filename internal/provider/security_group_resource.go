@@ -333,6 +333,8 @@ func (r *SecurityGroupResource) Update(ctx context.Context, req resource.UpdateR
 
 	body.Description = pointer(data.Description.ValueString())
 	body.Name = pointer(data.Name.ValueString())
+	rules := make([]genesiscloud.SecurityGroupRule, 0)
+
 	for _, rule := range data.Rules {
 		var portRangeMax, portRangeMin *int
 
@@ -344,13 +346,15 @@ func (r *SecurityGroupResource) Update(ctx context.Context, req resource.UpdateR
 			portRangeMin = pointer(int(rule.PortRangeMin.ValueInt64()))
 		}
 
-		*body.Rules = append(*body.Rules, genesiscloud.SecurityGroupRule{
+		rules = append(rules, genesiscloud.SecurityGroupRule{
 			Direction:    genesiscloud.SecurityGroupRuleDirection(rule.Direction.ValueString()),
 			PortRangeMax: portRangeMax,
 			PortRangeMin: portRangeMin,
 			Protocol:     genesiscloud.SecurityGroupRuleProtocol(rule.Protocol.ValueString()),
 		})
 	}
+
+	body.Rules = pointer(rules)
 
 	securityGroupId := data.Id.ValueString()
 

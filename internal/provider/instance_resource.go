@@ -267,7 +267,7 @@ func (r *InstanceResource) Create(ctx context.Context, req resource.CreateReques
 	if data.Metadata != nil {
 		body.Metadata = &struct {
 			StartupScript *string                        `json:"startup_script,omitempty"`
-			UserData      *genesiscloud.InstanceUserData `json:"userData,omitempty"`
+			UserData      *genesiscloud.InstanceUserData `json:"user_data,omitempty"`
 		}{
 			StartupScript: pointer(data.Metadata.StartupScript.ValueString()),
 		}
