@@ -17,6 +17,7 @@ resource "genesiscloud_volume" "example" {
   name   = "example"
   region = "ARC-IS-HAF-1"
   size   = 50
+  type   = "hdd"
 }
 ```
 
@@ -32,6 +33,9 @@ resource "genesiscloud_volume" "example" {
 - `size` (Number) The storage size of this volume given in GiB.
   - If the value of this attribute changes, Terraform will destroy and recreate the resource.
   - The value must be at least 1.
+- `type` (String) The storage type of the volume.
+  - If the value of this attribute changes, Terraform will destroy and recreate the resource.
+  - The value must be one of: [`hdd` `ssd`].
 
 ### Optional
 

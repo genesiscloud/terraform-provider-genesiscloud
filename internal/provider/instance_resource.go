@@ -197,7 +197,7 @@ func (r *InstanceResource) Schema(ctx context.Context, req resource.SchemaReques
 				},
 			}),
 			"type": resourceenhancer.Attribute(ctx, schema.StringAttribute{
-				MarkdownDescription: "The instance type identifier.[Learn more about instance types here](https://developers.genesiscloud.com/instances#instance-types)",
+				MarkdownDescription: "The instance type identifier. Learn more about instance types [here](https://developers.genesiscloud.com/instances#instance-types).",
 				Required:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
@@ -266,12 +266,8 @@ func (r *InstanceResource) Create(ctx context.Context, req resource.CreateReques
 
 	if data.Metadata != nil {
 		body.Metadata = &struct {
-			StartupScript *string `json:"startup_script,omitempty"`
-			UserData      *[]struct {
-				Content  string  `json:"content"`
-				Filename *string `json:"filename,omitempty"`
-				Type     string  `json:"type"`
-			} `json:"userData,omitempty"`
+			StartupScript *string                        `json:"startup_script,omitempty"`
+			UserData      *genesiscloud.InstanceUserData `json:"userData,omitempty"`
 		}{
 			StartupScript: pointer(data.Metadata.StartupScript.ValueString()),
 		}

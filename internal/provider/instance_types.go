@@ -108,8 +108,15 @@ func (data *InstanceModel) PopulateFromClientResponse(ctx context.Context, insta
 	}
 
 	data.PlacementOption = types.StringValue(string(instance.PlacementOption))
-	data.PrivateIp = types.StringValue(*instance.PrivateIp)
-	data.PublicIp = types.StringValue(*instance.PublicIp)
+
+	if instance.PrivateIp != nil {
+		data.PrivateIp = types.StringValue(*instance.PrivateIp)
+	}
+
+	if instance.PublicIp != nil {
+		data.PublicIp = types.StringValue(*instance.PublicIp)
+	}
+
 	data.PublicIpType = types.StringValue(string(instance.PublicIpType))
 	data.Region = types.StringValue(string(instance.Region))
 	data.Status = types.StringValue(string(instance.Status))

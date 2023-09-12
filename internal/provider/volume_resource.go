@@ -113,6 +113,16 @@ func (r *VolumeResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					stringplanmodifier.UseStateForUnknown(), // immutable
 				},
 			}),
+			"type": resourceenhancer.Attribute(ctx, schema.StringAttribute{
+				MarkdownDescription: "The storage type of the volume.",
+				Required:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
+				Validators: []validator.String{
+					stringvalidator.OneOf(sliceStringify(genesiscloud.AllVolumeTypes)...),
+				},
+			}),
 
 			// Internal
 			"retain_on_delete": resourceenhancer.Attribute(ctx, schema.BoolAttribute{
@@ -151,6 +161,7 @@ func (r *VolumeResource) Create(ctx context.Context, req resource.CreateRequest,
 	body.Name = data.Name.ValueString()
 	body.Region = genesiscloud.Region(data.Region.ValueString())
 	body.Size = int(data.Size.ValueInt64())
+	body.Type = pointer(genesiscloud.VolumeType(data.Type.ValueString()))
 
 	response, err := r.client.CreateVolumeWithResponse(ctx, body)
 	if err != nil {

@@ -37,7 +37,7 @@ resource "genesiscloud_instance" "example" {
 - `region` (String) The region identifier.
   - If the value of this attribute changes, Terraform will destroy and recreate the resource.
   - The value must be one of: [`ARC-IS-HAF-1` `EUC-DE-MUC-1` `NORD-NO-KRS-1`].
-- `type` (String) The instance type identifier.[Learn more about instance types here](https://developers.genesiscloud.com/instances#instance-types)
+- `type` (String) The instance type identifier. Learn more about instance types [here](https://developers.genesiscloud.com/instances#instance-types).
   - If the value of this attribute changes, Terraform will destroy and recreate the resource.
 
 ### Optional
