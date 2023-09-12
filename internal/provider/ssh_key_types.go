@@ -25,7 +25,7 @@ type SSHKeyModel struct {
 	PublicKey types.String `tfsdk:"public_key"`
 }
 
-func (data *SSHKeyModel) PopulateFromClientResponse(ctx context.Context, sshKey *genesiscloud.ComputeV1SSHKey) (diag diag.Diagnostics) {
+func (data *SSHKeyModel) PopulateFromClientResponse(ctx context.Context, sshKey *genesiscloud.SSHKey) (diag diag.Diagnostics) {
 	data.CreatedAt = types.StringValue(sshKey.CreatedAt.Format(time.RFC3339))
 	data.Fingerprint = types.StringValue(sshKey.Fingerprint)
 	data.Id = types.StringValue(sshKey.Id)

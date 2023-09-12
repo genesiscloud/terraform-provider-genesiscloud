@@ -34,7 +34,7 @@ type SnapshotModel struct {
 	Status types.String `tfsdk:"status"`
 }
 
-func (data *SnapshotModel) PopulateFromClientResponse(ctx context.Context, snapshot *genesiscloud.ComputeV1Snapshot) (diag diag.Diagnostics) {
+func (data *SnapshotModel) PopulateFromClientResponse(ctx context.Context, snapshot *genesiscloud.Snapshot) (diag diag.Diagnostics) {
 	data.CreatedAt = types.StringValue(snapshot.CreatedAt.Format(time.RFC3339))
 	data.Id = types.StringValue(snapshot.Id)
 	data.Name = types.StringValue(snapshot.Name)

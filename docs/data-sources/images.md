@@ -60,7 +60,7 @@ Required:
 Optional:
 
 - `region` (String) Filter by the region identifier.
-  - The value must be one of: [`ARC-IS-HAF-1` `NORD-NO-KRS-1`].
+  - The value must be one of: [`ARC-IS-HAF-1` `EUC-DE-MUC-1` `NORD-NO-KRS-1`].
 
 
 <a id="nestedatt--timeouts"></a>

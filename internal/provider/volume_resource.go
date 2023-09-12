@@ -93,7 +93,7 @@ func (r *VolumeResource) Schema(ctx context.Context, req resource.SchemaRequest,
 					stringplanmodifier.RequiresReplace(),
 				},
 				Validators: []validator.String{
-					stringvalidator.OneOf(sliceStringify(genesiscloud.AllComputeV1Regions)...),
+					stringvalidator.OneOf(sliceStringify(genesiscloud.AllRegions)...),
 				},
 			}),
 			"size": resourceenhancer.Attribute(ctx, schema.Int64Attribute{
@@ -111,6 +111,16 @@ func (r *VolumeResource) Schema(ctx context.Context, req resource.SchemaRequest,
 				Computed:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(), // immutable
+				},
+			}),
+			"type": resourceenhancer.Attribute(ctx, schema.StringAttribute{
+				MarkdownDescription: "The storage type of the volume.",
+				Required:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
+				Validators: []validator.String{
+					stringvalidator.OneOf(sliceStringify(genesiscloud.AllVolumeTypes)...),
 				},
 			}),
 
@@ -147,10 +157,11 @@ func (r *VolumeResource) Create(ctx context.Context, req resource.CreateRequest,
 
 	body := genesiscloud.CreateVolumeJSONRequestBody{}
 
-	body.Description = data.Description.ValueString()
+	body.Description = pointer(data.Description.ValueString())
 	body.Name = data.Name.ValueString()
-	body.Region = pointer(genesiscloud.ComputeV1Region(data.Region.ValueString()))
+	body.Region = genesiscloud.Region(data.Region.ValueString())
 	body.Size = int(data.Size.ValueInt64())
+	body.Type = pointer(genesiscloud.VolumeType(data.Type.ValueString()))
 
 	response, err := r.client.CreateVolumeWithResponse(ctx, body)
 	if err != nil {
@@ -292,8 +303,8 @@ func (r *VolumeResource) Update(ctx context.Context, req resource.UpdateRequest,
 
 	body := genesiscloud.UpdateVolumeJSONRequestBody{}
 
-	body.Name = data.Name.ValueString()
-	body.Description = data.Description.ValueString()
+	body.Name = pointer(data.Name.ValueString())
+	body.Description = pointer(data.Description.ValueString())
 
 	volumeId := data.Id.ValueString()
 

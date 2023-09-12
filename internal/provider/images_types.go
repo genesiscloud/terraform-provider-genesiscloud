@@ -23,7 +23,7 @@ type ImageModel struct {
 	Type types.String `tfsdk:"type"`
 }
 
-func (data *ImageModel) PopulateFromClientResponse(image *genesiscloud.ComputeV1Image) {
+func (data *ImageModel) PopulateFromClientResponse(image *genesiscloud.Image) {
 	data.CreatedAt = types.StringValue(image.CreatedAt.Format(time.RFC3339))
 	data.Id = types.StringValue(image.Id)
 	data.Name = types.StringValue(image.Name)

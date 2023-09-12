@@ -127,11 +127,9 @@ func (r *InstanceResource) Schema(ctx context.Context, req resource.SchemaReques
 				Computed:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
-					defaultplanmodifier.String(string(genesiscloud.ComputeV1PlacementOptionAUTO)),
+					defaultplanmodifier.String("AUTO"),
 				},
-				Validators: []validator.String{
-					stringvalidator.OneOf(sliceStringify(genesiscloud.AllComputeV1PlacementOptions)...),
-				},
+				Validators: []validator.String{},
 			}),
 			"private_ip": resourceenhancer.Attribute(ctx, schema.StringAttribute{
 				MarkdownDescription: "The private IPv4 IP-Address (IPv4 address).",
@@ -155,10 +153,10 @@ func (r *InstanceResource) Schema(ctx context.Context, req resource.SchemaReques
 				Computed:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
-					defaultplanmodifier.String(string(genesiscloud.ComputeV1InstancePublicIPTypeDynamic)),
+					defaultplanmodifier.String(string(genesiscloud.InstancePublicIPTypeDynamic)),
 				},
 				Validators: []validator.String{
-					stringvalidator.OneOf(sliceStringify(genesiscloud.AllComputeV1InstancePublicIPTypes)...),
+					stringvalidator.OneOf(sliceStringify(genesiscloud.AllInstancePublicIPTypes)...),
 				},
 			}),
 			"region": resourceenhancer.Attribute(ctx, schema.StringAttribute{
@@ -168,7 +166,7 @@ func (r *InstanceResource) Schema(ctx context.Context, req resource.SchemaReques
 					stringplanmodifier.RequiresReplace(),
 				},
 				Validators: []validator.String{
-					stringvalidator.OneOf(sliceStringify(genesiscloud.AllComputeV1Regions)...),
+					stringvalidator.OneOf(sliceStringify(genesiscloud.AllRegions)...),
 				},
 			}),
 			"security_group_ids": resourceenhancer.Attribute(ctx, schema.SetAttribute{
@@ -199,13 +197,10 @@ func (r *InstanceResource) Schema(ctx context.Context, req resource.SchemaReques
 				},
 			}),
 			"type": resourceenhancer.Attribute(ctx, schema.StringAttribute{
-				MarkdownDescription: "The instance type identifier.",
+				MarkdownDescription: "The instance type identifier. Learn more about instance types [here](https://developers.genesiscloud.com/instances#instance-types).",
 				Required:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
-				},
-				Validators: []validator.String{
-					stringvalidator.OneOf(sliceStringify(genesiscloud.AllComputeV1InstanceTypes)...),
 				},
 			}),
 			"updated_at": resourceenhancer.Attribute(ctx, schema.StringAttribute{
@@ -266,12 +261,13 @@ func (r *InstanceResource) Create(ctx context.Context, req resource.CreateReques
 		body.Hostname = data.Name.ValueString()
 	}
 
-	body.Type = genesiscloud.ComputeV1InstanceType(data.Type.ValueString())
+	body.Type = genesiscloud.InstanceType(data.Type.ValueString())
 	body.Image = data.ImageId.ValueString()
 
 	if data.Metadata != nil {
 		body.Metadata = &struct {
-			StartupScript *string `json:"startup_script,omitempty"`
+			StartupScript *string                        `json:"startup_script,omitempty"`
+			UserData      *genesiscloud.InstanceUserData `json:"user_data,omitempty"`
 		}{
 			StartupScript: pointer(data.Metadata.StartupScript.ValueString()),
 		}
@@ -299,9 +295,9 @@ func (r *InstanceResource) Create(ctx context.Context, req resource.CreateReques
 		body.Volumes = &volumeIds
 	}
 
-	body.PublicIpType = pointer(genesiscloud.ComputeV1InstancePublicIPType(data.PublicIpType.ValueString()))
-	body.Region = pointer(genesiscloud.ComputeV1Region(data.Region.ValueString()))
-	body.PlacementOption = pointer(genesiscloud.ComputeV1PlacementOption(data.PlacementOption.ValueString()))
+	body.PublicIpType = pointer(genesiscloud.InstancePublicIPType(data.PublicIpType.ValueString()))
+	body.Region = genesiscloud.Region(data.Region.ValueString())
+	body.PlacementOption = pointer(data.PlacementOption.ValueString())
 
 	response, err := r.client.CreateInstanceWithResponse(ctx, body)
 	if err != nil {

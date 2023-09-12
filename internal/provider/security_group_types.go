@@ -45,7 +45,7 @@ type SecurityGroupModel struct {
 	Status types.String `tfsdk:"status"`
 }
 
-func (data *SecurityGroupModel) PopulateFromClientResponse(ctx context.Context, securityGroup *genesiscloud.ComputeV1SecurityGroup) (diag diag.Diagnostics) {
+func (data *SecurityGroupModel) PopulateFromClientResponse(ctx context.Context, securityGroup *genesiscloud.SecurityGroup) (diag diag.Diagnostics) {
 	data.CreatedAt = types.StringValue(securityGroup.CreatedAt.Format(time.RFC3339))
 	data.Description = types.StringValue(securityGroup.Description)
 	data.Id = types.StringValue(securityGroup.Id)
