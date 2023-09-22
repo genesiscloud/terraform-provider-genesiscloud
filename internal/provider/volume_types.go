@@ -5,11 +5,12 @@ import (
 	"time"
 
 	"github.com/genesiscloud/genesiscloud-go"
+	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type VolumeModel struct {
+type VolumeResourceModel struct {
 	CreatedAt types.String `tfsdk:"created_at"`
 
 	// Description The human-readable description for the volume.
@@ -32,9 +33,17 @@ type VolumeModel struct {
 
 	// Type The storage type of the volume.
 	Type types.String `tfsdk:"type"`
+
+	// Internal
+
+	// RetainOnDelete Flag to retain the volume when the resource is deleted. It has to be deleted manually.
+	RetainOnDelete types.Bool `tfsdk:"retain_on_delete"`
+
+	// Timeouts The resource timeouts
+	Timeouts timeouts.Value `tfsdk:"timeouts"`
 }
 
-func (data *VolumeModel) PopulateFromClientResponse(ctx context.Context, volume *genesiscloud.Volume) (diag diag.Diagnostics) {
+func (data *VolumeResourceModel) PopulateFromClientResponse(ctx context.Context, volume *genesiscloud.Volume) (diag diag.Diagnostics) {
 	data.CreatedAt = types.StringValue(volume.CreatedAt.Format(time.RFC3339))
 	data.Description = types.StringValue(volume.Description)
 	data.Id = types.StringValue(volume.Id)

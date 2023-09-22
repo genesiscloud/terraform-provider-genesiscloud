@@ -7,12 +7,13 @@ import (
 	"time"
 
 	"github.com/genesiscloud/genesiscloud-go"
+	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type SnapshotModel struct {
+type SnapshotResourceModel struct {
 	CreatedAt types.String `tfsdk:"created_at"`
 
 	// Id The unique ID of the snapshot.
@@ -32,9 +33,17 @@ type SnapshotModel struct {
 
 	// Status The snapshot status.
 	Status types.String `tfsdk:"status"`
+
+	// Internal
+
+	// RetainOnDelete Flag to retain the snapshot when the resource is deleted. It has to be deleted manually.
+	RetainOnDelete types.Bool `tfsdk:"retain_on_delete"`
+
+	// Timeouts The resource timeouts
+	Timeouts timeouts.Value `tfsdk:"timeouts"`
 }
 
-func (data *SnapshotModel) PopulateFromClientResponse(ctx context.Context, snapshot *genesiscloud.Snapshot) (diag diag.Diagnostics) {
+func (data *SnapshotResourceModel) PopulateFromClientResponse(ctx context.Context, snapshot *genesiscloud.Snapshot) (diag diag.Diagnostics) {
 	data.CreatedAt = types.StringValue(snapshot.CreatedAt.Format(time.RFC3339))
 	data.Id = types.StringValue(snapshot.Id)
 	data.Name = types.StringValue(snapshot.Name)

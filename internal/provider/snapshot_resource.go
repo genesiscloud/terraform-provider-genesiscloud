@@ -14,7 +14,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
@@ -33,18 +32,6 @@ func NewSnapshotResource() resource.Resource {
 type SnapshotResource struct {
 	ResourceWithClient
 	ResourceWithTimeout
-}
-
-type SnapshotResourceModel struct {
-	SnapshotModel
-
-	// Internal
-
-	// RetainOnDelete Flag to retain the snapshot when the resource is deleted. It has to be deleted manually.
-	RetainOnDelete types.Bool `tfsdk:"retain_on_delete"`
-
-	// Timeouts The resource timeouts
-	Timeouts timeouts.Value `tfsdk:"timeouts"`
 }
 
 func (r *SnapshotResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

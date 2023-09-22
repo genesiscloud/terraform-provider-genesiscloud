@@ -29,26 +29,6 @@ type ImagesDataSource struct {
 	DataSourceWithTimeout
 }
 
-type ImagesFilterDataSourceModel struct {
-	// Region Filter by the region identifier.
-	Region types.String `tfsdk:"region"`
-
-	// Type Filter by the kind of image.
-	Type types.String `tfsdk:"type"`
-}
-
-// ImagesDataSourceModel describes the data source data model.
-type ImagesDataSourceModel struct {
-	Filter ImagesFilterDataSourceModel `tfsdk:"filter"`
-	Images []ImageModel                `tfsdk:"images"`
-	Id     types.String                `tfsdk:"id"` // placeholder
-
-	// Internal
-
-	// Timeouts The data source timeouts
-	Timeouts timeouts.Value `tfsdk:"timeouts"`
-}
-
 func (d *ImagesDataSource) Metadata(ctx context.Context, req datasource.MetadataRequest, resp *datasource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_images"
 }

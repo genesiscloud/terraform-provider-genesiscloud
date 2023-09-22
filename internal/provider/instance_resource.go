@@ -39,15 +39,6 @@ type InstanceResource struct {
 	ResourceWithTimeout
 }
 
-type InstanceResourceModel struct {
-	InstanceModel
-
-	// Internal
-
-	// Timeouts The resource timeouts
-	Timeouts timeouts.Value `tfsdk:"timeouts"`
-}
-
 func (r *InstanceResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_instance"
 }
@@ -148,7 +139,7 @@ func (r *InstanceResource) Schema(ctx context.Context, req resource.SchemaReques
 				},
 			}),
 			"public_ip_type": resourceenhancer.Attribute(ctx, schema.StringAttribute{
-				MarkdownDescription: "When set to `static`, the instance's public IP will not change between start and stop actions.",
+				MarkdownDescription: `When set to "static", the instance's public IP will not change between start and stop actions.`,
 				Optional:            true,
 				Computed:            true,
 				PlanModifiers: []planmodifier.String{

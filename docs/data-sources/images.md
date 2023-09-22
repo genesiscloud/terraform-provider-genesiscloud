@@ -55,12 +55,12 @@ data "genesiscloud_images" "preconfigured-images" {
 Required:
 
 - `type` (String) Filter by the kind of image.
-  - The value must be one of: [`base-os` `preconfigured` `snapshot`].
+  - The value must be one of: ["base-os" "preconfigured" "snapshot"].
 
 Optional:
 
 - `region` (String) Filter by the region identifier.
-  - The value must be one of: [`ARC-IS-HAF-1` `EUC-DE-MUC-1` `NORD-NO-KRS-1`].
+  - The value must be one of: ["ARC-IS-HAF-1" "EUC-DE-MUC-1" "NORD-NO-KRS-1"].
 
 
 <a id="nestedatt--timeouts"></a>
@@ -68,7 +68,7 @@ Optional:
 
 Optional:
 
-- `read` (String)
+- `read` (String) A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
 
 
 <a id="nestedatt--images"></a>

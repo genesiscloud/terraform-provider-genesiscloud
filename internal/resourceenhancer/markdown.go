@@ -10,8 +10,8 @@ import (
 
 // TODO: Upstream better quotes and remove this
 func patchMarkdown(s string) string {
-	s = strings.ReplaceAll(s, `"\"`, "`")
-	s = strings.ReplaceAll(s, `\""`, "`")
+	s = strings.ReplaceAll(s, `"\"`, `"`)
+	s = strings.ReplaceAll(s, `\""`, `"`)
 	return s
 }
 

@@ -29,18 +29,18 @@ resource "genesiscloud_volume" "example" {
 - `name` (String) The human-readable name for the volume.
 - `region` (String) The region identifier.
   - If the value of this attribute changes, Terraform will destroy and recreate the resource.
-  - The value must be one of: [`ARC-IS-HAF-1` `EUC-DE-MUC-1` `NORD-NO-KRS-1`].
+  - The value must be one of: ["ARC-IS-HAF-1" "EUC-DE-MUC-1" "NORD-NO-KRS-1"].
 - `size` (Number) The storage size of this volume given in GiB.
   - If the value of this attribute changes, Terraform will destroy and recreate the resource.
   - The value must be at least 1.
 - `type` (String) The storage type of the volume.
   - If the value of this attribute changes, Terraform will destroy and recreate the resource.
-  - The value must be one of: [`hdd` `ssd`].
+  - The value must be one of: ["hdd" "ssd"].
 
 ### Optional
 
 - `description` (String) The human-readable description for the volume.
-  - Sets the default value `` if the attribute is not set.
+  - Sets the default value "" if the attribute is not set.
 - `retain_on_delete` (Boolean) Flag to retain the volume when the resource is deleted
   - Sets the default value "false" if the attribute is not set.
 - `timeouts` (Attributes) (see [below for nested schema](#nestedatt--timeouts))
@@ -56,10 +56,10 @@ resource "genesiscloud_volume" "example" {
 
 Optional:
 
-- `create` (String)
-- `delete` (String)
-- `read` (String)
-- `update` (String)
+- `create` (String) A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+- `delete` (String) A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+- `read` (String) A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Read operations occur during any refresh or planning operation when refresh is enabled.
+- `update` (String) A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
 
 ## Import
 

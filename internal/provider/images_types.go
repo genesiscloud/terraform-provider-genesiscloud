@@ -4,8 +4,29 @@ import (
 	"time"
 
 	"github.com/genesiscloud/genesiscloud-go"
+	"github.com/hashicorp/terraform-plugin-framework-timeouts/datasource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
+
+type ImagesFilterDataSourceModel struct {
+	// Region Filter by the region identifier.
+	Region types.String `tfsdk:"region"`
+
+	// Type Filter by the kind of image.
+	Type types.String `tfsdk:"type"`
+}
+
+// ImagesDataSourceModel describes the data source data model.
+type ImagesDataSourceModel struct {
+	Filter ImagesFilterDataSourceModel `tfsdk:"filter"`
+	Images []ImageModel                `tfsdk:"images"`
+	Id     types.String                `tfsdk:"id"` // placeholder
+
+	// Internal
+
+	// Timeouts The data source timeouts
+	Timeouts timeouts.Value `tfsdk:"timeouts"`
+}
 
 type ImageModel struct {
 	CreatedAt types.String `tfsdk:"created_at"`
