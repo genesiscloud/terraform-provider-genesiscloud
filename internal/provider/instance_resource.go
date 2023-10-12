@@ -216,10 +216,6 @@ func (r *InstanceResource) Schema(ctx context.Context, req resource.SchemaReques
 
 func (r *InstanceResource) ConfigValidators(ctx context.Context) []resource.ConfigValidator {
 	return []resource.ConfigValidator{
-		resourcevalidator.ExactlyOneOf(
-			path.MatchRoot("password"),
-			path.MatchRoot("ssh_key_ids"),
-		),
 		resourcevalidator.Conflicting(
 			path.MatchRoot("metadata").AtName("startup_script"),
 			// In the future add additional metadata options here
