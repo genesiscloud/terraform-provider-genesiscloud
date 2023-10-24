@@ -8,7 +8,6 @@ import (
 	"github.com/genesiscloud/terraform-provider-genesiscloud/internal/resourceenhancer"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/resourcevalidator"
-	"github.com/hashicorp/terraform-plugin-framework-validators/setvalidator"
 	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -72,11 +71,18 @@ func (r *InstanceResource) Schema(ctx context.Context, req resource.SchemaReques
 					stringplanmodifier.UseStateForUnknown(), // immutable
 				},
 			}),
-			"image_id": resourceenhancer.Attribute(ctx, schema.StringAttribute{
-				MarkdownDescription: "The image of the instance.",
+			"image": resourceenhancer.Attribute(ctx, schema.StringAttribute{
+				MarkdownDescription: "The source image or snapshot of the instance.",
 				Required:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
+				},
+			}),
+			"image_id": resourceenhancer.Attribute(ctx, schema.StringAttribute{
+				MarkdownDescription: "The resulting image ID of the instance.",
+				Computed:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(), // immutable
 				},
 			}),
 			"metadata": schema.SingleNestedAttribute{
@@ -167,6 +173,8 @@ func (r *InstanceResource) Schema(ctx context.Context, req resource.SchemaReques
 				Computed:            true, // might be changed outside of Terraform
 				PlanModifiers: []planmodifier.Set{
 					setplanmodifier.UseStateForUnknown(), // if unset, expect no changes
+
+					// TODO: Update of this field does not work in pulumi
 				},
 			}),
 			"ssh_key_ids": resourceenhancer.Attribute(ctx, schema.SetAttribute{
@@ -175,9 +183,6 @@ func (r *InstanceResource) Schema(ctx context.Context, req resource.SchemaReques
 				Optional:            true,
 				PlanModifiers: []planmodifier.Set{
 					setplanmodifier.RequiresReplace(),
-				},
-				Validators: []validator.Set{
-					setvalidator.SizeAtLeast(1), // Note: This is a internal limitation that should be lifted in the future
 				},
 			}),
 			"status": resourceenhancer.Attribute(ctx, schema.StringAttribute{
@@ -206,6 +211,8 @@ func (r *InstanceResource) Schema(ctx context.Context, req resource.SchemaReques
 				PlanModifiers: []planmodifier.Set{
 					setplanmodifier.UseStateForUnknown(), // if unset, expect no changes
 				},
+
+				// TODO: Update of this field does not work in pulumi
 			}),
 
 			// Internal
@@ -249,7 +256,7 @@ func (r *InstanceResource) Create(ctx context.Context, req resource.CreateReques
 	}
 
 	body.Type = genesiscloud.InstanceType(data.Type.ValueString())
-	body.Image = data.ImageId.ValueString()
+	body.Image = data.Image.ValueString()
 
 	if data.Metadata != nil {
 		body.Metadata = &struct {

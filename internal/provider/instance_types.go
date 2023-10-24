@@ -26,7 +26,10 @@ type InstanceResourceModel struct {
 	// Id The unique ID of the instance.
 	Id types.String `tfsdk:"id"`
 
-	// ImageId The image of the instance.
+	// Image The source image or snapshot of the instance.
+	Image types.String `tfsdk:"image"`
+
+	// ImageId The resulting image ID of the instance.
 	ImageId types.String `tfsdk:"image_id"`
 
 	// Metadata Option to provide metadata. Currently supported is `startup_script`.
