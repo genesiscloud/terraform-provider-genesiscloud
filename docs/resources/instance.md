@@ -31,7 +31,7 @@ resource "genesiscloud_instance" "example" {
 
 ### Required
 
-- `image_id` (String) The image of the instance.
+- `image` (String) The source image or snapshot of the instance.
   - If the value of this attribute changes, Terraform will destroy and recreate the resource.
 - `name` (String) The human-readable name for the instance.
 - `region` (String) The region identifier.
@@ -58,7 +58,6 @@ resource "genesiscloud_instance" "example" {
 - `security_group_ids` (Set of String) The security groups of the instance. If not provided will be set to the default security group.
 - `ssh_key_ids` (Set of String) The ssh keys of the instance.
   - If the value of this attribute changes, Terraform will destroy and recreate the resource.
-  - The set must contain at least 1 elements.
 - `timeouts` (Attributes) (see [below for nested schema](#nestedatt--timeouts))
 - `volume_ids` (Set of String) The volumes of the instance.
 
@@ -66,6 +65,7 @@ resource "genesiscloud_instance" "example" {
 
 - `created_at` (String) The timestamp when this image was created in RFC 3339.
 - `id` (String) The unique ID of the instance.
+- `image_id` (String) The resulting image ID of the instance.
 - `private_ip` (String) The private IPv4 IP-Address (IPv4 address).
 - `public_ip` (String) The public IPv4 IP-Address (IPv4 address).
 - `status` (String) The instance status.
