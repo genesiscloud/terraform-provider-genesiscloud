@@ -1,6 +1,6 @@
 module github.com/genesiscloud/terraform-provider-genesiscloud
 
-go 1.18
+go 1.20
 
 require (
 	github.com/genesiscloud/genesiscloud-go v1.0.1
