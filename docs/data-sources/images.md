@@ -81,5 +81,3 @@ Read-Only:
 - `name` (String) The display name that has been given to an image.
 - `regions` (Set of String) The list of regions in which this image can be used in.
 - `type` (String) Describes the kind of image.
-
-
