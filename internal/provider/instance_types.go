@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/genesiscloud/genesiscloud-go"
+	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -16,7 +17,7 @@ type InstanceMetadataModel struct {
 	StartupScript types.String `tfsdk:"startup_script"`
 }
 
-type InstanceModel struct {
+type InstanceResourceModel struct {
 	CreatedAt types.String `tfsdk:"created_at"`
 
 	// Hostname The hostname of your instance.
@@ -25,7 +26,10 @@ type InstanceModel struct {
 	// Id The unique ID of the instance.
 	Id types.String `tfsdk:"id"`
 
-	// ImageId The image of the instance.
+	// Image The source image or snapshot of the instance.
+	Image types.String `tfsdk:"image"`
+
+	// ImageId The resulting image ID of the instance.
 	ImageId types.String `tfsdk:"image_id"`
 
 	// Metadata Option to provide metadata. Currently supported is `startup_script`.
@@ -49,7 +53,7 @@ type InstanceModel struct {
 	// PublicIp The public IPv4 IP-Address (IPv4 address).
 	PublicIp types.String `tfsdk:"public_ip"`
 
-	// PublicIpType When set to `static`, the instance's public IP will not change between start and stop actions.
+	// PublicIpType When set to "static", the instance's public IP will not change between start and stop actions.
 	PublicIpType types.String `tfsdk:"public_ip_type"`
 
 	// Region The region identifier.
@@ -71,9 +75,14 @@ type InstanceModel struct {
 
 	// VolumeIds The volumes of the instance
 	VolumeIds types.Set `tfsdk:"volume_ids"`
+
+	// Internal
+
+	// Timeouts The resource timeouts
+	Timeouts timeouts.Value `tfsdk:"timeouts"`
 }
 
-func (data *InstanceModel) PopulateFromClientResponse(ctx context.Context, instance *genesiscloud.Instance) (diag diag.Diagnostics) {
+func (data *InstanceResourceModel) PopulateFromClientResponse(ctx context.Context, instance *genesiscloud.Instance) (diag diag.Diagnostics) {
 	data.Id = types.StringValue(instance.Id)
 	data.Name = types.StringValue(instance.Name)
 	data.Hostname = types.StringValue(instance.Hostname)

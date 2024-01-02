@@ -37,15 +37,6 @@ type SecurityGroupResource struct {
 	ResourceWithTimeout
 }
 
-type SecurityGroupResourceModel struct {
-	SecurityGroupModel
-
-	// Internal
-
-	// Timeouts The resource timeouts
-	Timeouts timeouts.Value `tfsdk:"timeouts"`
-}
-
 func (r *SecurityGroupResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_security_group"
 }

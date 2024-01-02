@@ -31,15 +31,6 @@ type SSHKeyResource struct {
 	ResourceWithTimeout
 }
 
-type SSHKeyResourceModel struct {
-	SSHKeyModel
-
-	// Internal
-
-	// Timeouts The resource timeouts
-	Timeouts timeouts.Value `tfsdk:"timeouts"`
-}
-
 func (r *SSHKeyResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_ssh_key"
 }

@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/genesiscloud/genesiscloud-go"
+	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
@@ -23,7 +24,7 @@ type SecurityGroupRuleModel struct {
 	Protocol types.String `tfsdk:"protocol"`
 }
 
-type SecurityGroupModel struct {
+type SecurityGroupResourceModel struct {
 	CreatedAt types.String `tfsdk:"created_at"`
 
 	// Description The human-readable description for the security group.
@@ -43,9 +44,14 @@ type SecurityGroupModel struct {
 
 	// Status The security group status.
 	Status types.String `tfsdk:"status"`
+
+	// Internal
+
+	// Timeouts The resource timeouts
+	Timeouts timeouts.Value `tfsdk:"timeouts"`
 }
 
-func (data *SecurityGroupModel) PopulateFromClientResponse(ctx context.Context, securityGroup *genesiscloud.SecurityGroup) (diag diag.Diagnostics) {
+func (data *SecurityGroupResourceModel) PopulateFromClientResponse(ctx context.Context, securityGroup *genesiscloud.SecurityGroup) (diag diag.Diagnostics) {
 	data.CreatedAt = types.StringValue(securityGroup.CreatedAt.Format(time.RFC3339))
 	data.Description = types.StringValue(securityGroup.Description)
 	data.Id = types.StringValue(securityGroup.Id)

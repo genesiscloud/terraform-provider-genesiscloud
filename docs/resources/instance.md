@@ -31,12 +31,12 @@ resource "genesiscloud_instance" "example" {
 
 ### Required
 
-- `image_id` (String) The image of the instance.
+- `image` (String) The source image or snapshot of the instance.
   - If the value of this attribute changes, Terraform will destroy and recreate the resource.
 - `name` (String) The human-readable name for the instance.
 - `region` (String) The region identifier.
   - If the value of this attribute changes, Terraform will destroy and recreate the resource.
-  - The value must be one of: [`ARC-IS-HAF-1` `EUC-DE-MUC-1` `NORD-NO-KRS-1`].
+  - The value must be one of: ["ARC-IS-HAF-1" "EUC-DE-MUC-1" "NORD-NO-KRS-1"].
 - `type` (String) The instance type identifier. Learn more about instance types [here](https://developers.genesiscloud.com/instances#instance-types).
   - If the value of this attribute changes, Terraform will destroy and recreate the resource.
 
@@ -50,15 +50,14 @@ resource "genesiscloud_instance" "example" {
   - The string length must be at least 16.
 - `placement_option` (String) The placement option identifier in which instances are physically located relative to each other within a zone.
   - If the value of this attribute changes, Terraform will destroy and recreate the resource.
-  - Sets the default value `AUTO` if the attribute is not set.
-- `public_ip_type` (String) When set to `static`, the instance's public IP will not change between start and stop actions.
+  - Sets the default value "AUTO" if the attribute is not set.
+- `public_ip_type` (String) When set to "static", the instance's public IP will not change between start and stop actions.
   - If the value of this attribute changes, Terraform will destroy and recreate the resource.
-  - Sets the default value `dynamic` if the attribute is not set.
-  - The value must be one of: [`dynamic` `static`].
+  - Sets the default value "dynamic" if the attribute is not set.
+  - The value must be one of: ["dynamic" "static"].
 - `security_group_ids` (Set of String) The security groups of the instance. If not provided will be set to the default security group.
 - `ssh_key_ids` (Set of String) The ssh keys of the instance.
   - If the value of this attribute changes, Terraform will destroy and recreate the resource.
-  - The set must contain at least 1 elements.
 - `timeouts` (Attributes) (see [below for nested schema](#nestedatt--timeouts))
 - `volume_ids` (Set of String) The volumes of the instance.
 
@@ -66,6 +65,7 @@ resource "genesiscloud_instance" "example" {
 
 - `created_at` (String) The timestamp when this image was created in RFC 3339.
 - `id` (String) The unique ID of the instance.
+- `image_id` (String) The resulting image ID of the instance.
 - `private_ip` (String) The private IPv4 IP-Address (IPv4 address).
 - `public_ip` (String) The public IPv4 IP-Address (IPv4 address).
 - `status` (String) The instance status.
@@ -85,10 +85,10 @@ Optional:
 
 Optional:
 
-- `create` (String)
-- `delete` (String)
-- `read` (String)
-- `update` (String)
+- `create` (String) A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
+- `delete` (String) A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Setting a timeout for a Delete operation is only applicable if changes are saved into state before the destroy operation occurs.
+- `read` (String) A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours). Read operations occur during any refresh or planning operation when refresh is enabled.
+- `update` (String) A string that can be [parsed as a duration](https://pkg.go.dev/time#ParseDuration) consisting of numbers and unit suffixes, such as "30s" or "2h45m". Valid time units are "s" (seconds), "m" (minutes), "h" (hours).
 
 ## Import
 

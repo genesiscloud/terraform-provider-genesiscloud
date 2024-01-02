@@ -17,7 +17,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
@@ -36,18 +35,6 @@ func NewVolumeResource() resource.Resource {
 type VolumeResource struct {
 	ResourceWithClient
 	ResourceWithTimeout
-}
-
-type VolumeResourceModel struct {
-	VolumeModel
-
-	// Internal
-
-	// RetainOnDelete Flag to retain the volume when the resource is deleted. It has to be deleted manually.
-	RetainOnDelete types.Bool `tfsdk:"retain_on_delete"`
-
-	// Timeouts The resource timeouts
-	Timeouts timeouts.Value `tfsdk:"timeouts"`
 }
 
 func (r *VolumeResource) Metadata(ctx context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
