@@ -3,7 +3,8 @@ module github.com/genesiscloud/terraform-provider-genesiscloud
 go 1.20
 
 require (
-	github.com/genesiscloud/genesiscloud-go v1.0.1
+	// TODO: replace with actual version once genesiscloud-go is released
+	github.com/genesiscloud/genesiscloud-go v1.0.2-0.20240129114608-15a1ad9b58d9
 	github.com/hashicorp/go-retryablehttp v0.7.5
 	github.com/hashicorp/terraform-plugin-docs v0.16.0
 	github.com/hashicorp/terraform-plugin-framework v1.5.0
