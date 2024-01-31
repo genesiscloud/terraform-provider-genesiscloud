@@ -122,12 +122,12 @@ func (r *SnapshotResource) Create(ctx context.Context, req resource.CreateReques
 	}
 	defer cancel()
 
-	body := genesiscloud.CreateSnapshotJSONRequestBody{}
+	body := genesiscloud.CreateInstanceSnapshotJSONRequestBody{}
 	body.Name = data.Name.ValueString()
 
 	instanceId := data.InstanceId.ValueString()
 
-	response, err := r.client.CreateSnapshotWithResponse(ctx, instanceId, body)
+	response, err := r.client.CreateInstanceSnapshotWithResponse(ctx, instanceId, body)
 	if err != nil {
 		resp.Diagnostics.AddError("Client Error", generateErrorMessage("create snapshot", err))
 		return
