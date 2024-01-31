@@ -42,6 +42,10 @@ type ImageModel struct {
 
 	// Type Describes the kind of image.
 	Type types.String `tfsdk:"type"`
+
+	Slug types.String `tfsdk:"slug"`
+
+	Versions []types.String `tfsdk:"versions"`
 }
 
 func (data *ImageModel) PopulateFromClientResponse(image *genesiscloud.Image) {
@@ -52,5 +56,17 @@ func (data *ImageModel) PopulateFromClientResponse(image *genesiscloud.Image) {
 	for _, region := range image.Regions {
 		data.Regions = append(data.Regions, types.StringValue(string(region)))
 	}
+
 	data.Type = types.StringValue(string(image.Type))
+
+	if image.Slug != nil {
+		data.Slug = types.StringValue(*image.Slug)
+	}
+
+	data.Versions = nil
+	if image.Versions != nil {
+		for _, version := range *image.Versions {
+			data.Versions = append(data.Versions, types.StringValue(string(version)))
+		}
+	}
 }

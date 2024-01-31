@@ -55,7 +55,7 @@ data "genesiscloud_images" "preconfigured-images" {
 Required:
 
 - `type` (String) Filter by the kind of image.
-  - The value must be one of: ["base-os" "preconfigured" "snapshot"].
+  - The value must be one of: ["base-os" "cloud-image" "preconfigured" "snapshot"].
 
 Optional:
 
@@ -80,4 +80,6 @@ Read-Only:
 - `id` (String) A unique number that can be used to identify and reference a specific image.
 - `name` (String) The display name that has been given to an image.
 - `regions` (Set of String) The list of regions in which this image can be used in.
+- `slug` (String) The image slug.
 - `type` (String) Describes the kind of image.
+- `versions` (Set of String) The list of versions if this is a cloud-image otherwise empty.
