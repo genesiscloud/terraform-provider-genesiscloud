@@ -82,4 +82,4 @@ Read-Only:
 - `regions` (Set of String) The list of regions in which this image can be used in.
 - `slug` (String) The image slug.
 - `type` (String) Describes the kind of image.
-- `versions` (Set of String) The list of versions if this is a cloud-image otherwise empty.
+- `versions` (List of String) The list of versions if this is a cloud-image otherwise empty.

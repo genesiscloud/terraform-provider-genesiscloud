@@ -87,7 +87,7 @@ func (d *ImagesDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 							MarkdownDescription: "The image slug.",
 							Computed:            true,
 						}),
-						"versions": datasourceenhancer.Attribute(ctx, schema.SetAttribute{
+						"versions": datasourceenhancer.Attribute(ctx, schema.ListAttribute{
 							ElementType:         types.StringType,
 							MarkdownDescription: "The list of versions if this is a cloud-image otherwise empty.",
 							Computed:            true,
