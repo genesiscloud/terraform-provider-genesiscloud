@@ -83,6 +83,15 @@ func (d *ImagesDataSource) Schema(ctx context.Context, req datasource.SchemaRequ
 							MarkdownDescription: "Describes the kind of image.",
 							Computed:            true,
 						}),
+						"slug": datasourceenhancer.Attribute(ctx, schema.StringAttribute{
+							MarkdownDescription: "The image slug.",
+							Computed:            true,
+						}),
+						"versions": datasourceenhancer.Attribute(ctx, schema.ListAttribute{
+							ElementType:         types.StringType,
+							MarkdownDescription: "The list of versions if this is a cloud-image otherwise empty.",
+							Computed:            true,
+						}),
 					},
 				},
 			},
@@ -158,7 +167,7 @@ func (d *ImagesDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 			}
 
 			model := ImageModel{}
-			model.PopulateFromClientResponse(&image)
+			model.PopulateFromClientResponse(ctx, &image)
 
 			data.Images = append(data.Images, model)
 		}
