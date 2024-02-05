@@ -167,7 +167,7 @@ func (d *ImagesDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 			}
 
 			model := ImageModel{}
-			model.PopulateFromClientResponse(&image)
+			model.PopulateFromClientResponse(ctx, &image)
 
 			data.Images = append(data.Images, model)
 		}

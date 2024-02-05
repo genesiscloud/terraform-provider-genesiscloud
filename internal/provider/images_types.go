@@ -1,10 +1,12 @@
 package provider
 
 import (
+	"context"
 	"time"
 
 	"github.com/genesiscloud/genesiscloud-go"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/datasource/timeouts"
+	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -45,10 +47,10 @@ type ImageModel struct {
 
 	Slug types.String `tfsdk:"slug"`
 
-	Versions []types.String `tfsdk:"versions"`
+	Versions types.List `tfsdk:"versions"`
 }
 
-func (data *ImageModel) PopulateFromClientResponse(image *genesiscloud.Image) {
+func (data *ImageModel) PopulateFromClientResponse(ctx context.Context, image *genesiscloud.Image) (diag diag.Diagnostics) {
 	data.CreatedAt = types.StringValue(image.CreatedAt.Format(time.RFC3339))
 	data.Id = types.StringValue(image.Id)
 	data.Name = types.StringValue(image.Name)
@@ -63,10 +65,10 @@ func (data *ImageModel) PopulateFromClientResponse(image *genesiscloud.Image) {
 		data.Slug = types.StringValue(*image.Slug)
 	}
 
-	data.Versions = nil
-	if image.Versions != nil {
-		for _, version := range *image.Versions {
-			data.Versions = append(data.Versions, types.StringValue(string(version)))
-		}
+	data.Versions, diag = types.ListValueFrom(ctx, types.StringType, image.Versions)
+	if diag.HasError() {
+		return
 	}
+
+	return
 }
