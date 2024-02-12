@@ -76,6 +76,9 @@ type InstanceResourceModel struct {
 	// VolumeIds The volumes of the instance
 	VolumeIds types.Set `tfsdk:"volume_ids"`
 
+	// FloatingIp The floating IP of the instance.
+	FloatingIpId types.String `tfsdk:"floating_ip_id"`
+
 	// Internal
 
 	// Timeouts The resource timeouts
@@ -124,6 +127,10 @@ func (data *InstanceResourceModel) PopulateFromClientResponse(ctx context.Contex
 
 	if instance.PublicIp != nil {
 		data.PublicIp = types.StringValue(*instance.PublicIp)
+	}
+
+	if instance.FloatingIp != nil {
+		data.FloatingIpId = types.StringValue(instance.FloatingIp.Id)
 	}
 
 	data.PublicIpType = types.StringValue(string(instance.PublicIpType))
