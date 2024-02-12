@@ -94,7 +94,8 @@ func (r *FloatingIPResource) Schema(ctx context.Context, req resource.SchemaRequ
 					stringplanmodifier.RequiresReplace(),
 				},
 				Validators: []validator.String{
-					stringvalidator.OneOf(sliceStringify(genesiscloud.AllFloatingIPVersions)...),
+					stringvalidator.OneOf(string(genesiscloud.CreateFloatingIPJSONBodyVersionIpv4)),
+					// stringvalidator.OneOf(sliceStringify(genesiscloud.AllFloatingIPVersions)...),
 				},
 			}),
 			"ip_address": resourceenhancer.Attribute(ctx, schema.StringAttribute{
