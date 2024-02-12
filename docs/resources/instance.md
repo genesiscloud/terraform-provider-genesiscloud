@@ -42,6 +42,7 @@ resource "genesiscloud_instance" "example" {
 
 ### Optional
 
+- `floating_ip_id` (String) The floating IP attached to the instance.
 - `hostname` (String) The hostname of your instance. If not provided will be initially set to the `name` attribute.
   - If the value of this attribute is configured and changes, Terraform will destroy and recreate the resource.
 - `metadata` (Attributes) Option to provide metadata. Currently supported is `startup_script`. (see [below for nested schema](#nestedatt--metadata))
