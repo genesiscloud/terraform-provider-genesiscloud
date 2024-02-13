@@ -148,18 +148,6 @@ func (r *InstanceResource) Schema(ctx context.Context, req resource.SchemaReques
 					// TODO: Could be changed outside of terraform via stop+start?
 				},
 			}),
-			"public_ip_type": resourceenhancer.Attribute(ctx, schema.StringAttribute{
-				MarkdownDescription: `When set to "static", the instance's public IP will not change between start and stop actions.`,
-				Optional:            true,
-				Computed:            true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
-					defaultplanmodifier.String(string(genesiscloud.InstancePublicIPTypeDynamic)),
-				},
-				Validators: []validator.String{
-					stringvalidator.OneOf(sliceStringify(genesiscloud.AllInstancePublicIPTypes)...),
-				},
-			}),
 			"region": resourceenhancer.Attribute(ctx, schema.StringAttribute{
 				MarkdownDescription: "The region identifier.",
 				Required:            true,
@@ -264,9 +252,6 @@ func (r *InstanceResource) Create(ctx context.Context, req resource.CreateReques
 
 	if !data.FloatingIpId.IsNull() {
 		body.FloatingIp = data.FloatingIpId.ValueStringPointer()
-		body.PublicIpType = pointer(genesiscloud.InstancePublicIPTypeStatic)
-	} else {
-		body.PublicIpType = pointer(genesiscloud.InstancePublicIPType(data.PublicIpType.ValueString()))
 	}
 
 	if data.Metadata != nil {

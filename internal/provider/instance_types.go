@@ -53,9 +53,6 @@ type InstanceResourceModel struct {
 	// PublicIp The public IPv4 IP-Address (IPv4 address).
 	PublicIp types.String `tfsdk:"public_ip"`
 
-	// PublicIpType When set to "static", the instance's public IP will not change between start and stop actions.
-	PublicIpType types.String `tfsdk:"public_ip_type"`
-
 	// Region The region identifier.
 	Region types.String `tfsdk:"region"`
 
@@ -133,7 +130,6 @@ func (data *InstanceResourceModel) PopulateFromClientResponse(ctx context.Contex
 		data.FloatingIpId = types.StringValue(instance.FloatingIp.Id)
 	}
 
-	data.PublicIpType = types.StringValue(string(instance.PublicIpType))
 	data.Region = types.StringValue(string(instance.Region))
 	data.Status = types.StringValue(string(instance.Status))
 	data.CreatedAt = types.StringValue(instance.CreatedAt.Format(time.RFC3339))
