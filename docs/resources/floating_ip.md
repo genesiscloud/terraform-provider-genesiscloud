@@ -46,7 +46,7 @@ resource "genesiscloud_floating_ip" "floating_ip" {
 - `ip_address` (String) The IP address of the floating IP.
 - `is_public` (Boolean) Whether the floating IP is public or private.
   - Sets the default value "true" if the attribute is not set.
-- `status` (String) The instance status.
+- `status` (String) The floating IP status.
 - `updated_at` (String) The timestamp when this image was last updated in RFC 3339.
 
 <a id="nestedatt--timeouts"></a>

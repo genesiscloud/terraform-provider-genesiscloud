@@ -81,7 +81,7 @@ func (r *FloatingIPResource) Schema(ctx context.Context, req resource.SchemaRequ
 				Optional:            true,
 			}),
 			"status": resourceenhancer.Attribute(ctx, schema.StringAttribute{
-				MarkdownDescription: "The instance status.",
+				MarkdownDescription: "The floating IP status.",
 				Computed:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(), // immutable
