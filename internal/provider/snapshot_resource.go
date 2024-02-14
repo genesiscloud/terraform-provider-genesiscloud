@@ -325,7 +325,6 @@ func (r *SnapshotResource) Delete(ctx context.Context, req resource.DeleteReques
 	}
 
 	response, err := r.client.DeleteSnapshotWithResponse(ctx, snapshotId)
-
 	if err != nil {
 		resp.Diagnostics.AddError("Client Error", generateErrorMessage("delete snapshot", err))
 		return

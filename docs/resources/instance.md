@@ -17,8 +17,8 @@ resource "genesiscloud_instance" "example" {
   name   = "example"
   region = "ARC-IS-HAF-1"
 
-  image_id = "my-image-id"
-  type     = "vcpu-2_memory-4g_disk-80g"
+  image = "my-image-id"
+  type  = "vcpu-2_memory-4g_disk-80g"
 
   ssh_key_ids = [
     "my-ssh-key-id"
@@ -42,6 +42,7 @@ resource "genesiscloud_instance" "example" {
 
 ### Optional
 
+- `floating_ip_id` (String) The floating IP attached to the instance.
 - `hostname` (String) The hostname of your instance. If not provided will be initially set to the `name` attribute.
   - If the value of this attribute is configured and changes, Terraform will destroy and recreate the resource.
 - `metadata` (Attributes) Option to provide metadata. Currently supported is `startup_script`. (see [below for nested schema](#nestedatt--metadata))
@@ -51,10 +52,6 @@ resource "genesiscloud_instance" "example" {
 - `placement_option` (String) The placement option identifier in which instances are physically located relative to each other within a zone.
   - If the value of this attribute changes, Terraform will destroy and recreate the resource.
   - Sets the default value "AUTO" if the attribute is not set.
-- `public_ip_type` (String) When set to "static", the instance's public IP will not change between start and stop actions.
-  - If the value of this attribute changes, Terraform will destroy and recreate the resource.
-  - Sets the default value "dynamic" if the attribute is not set.
-  - The value must be one of: ["dynamic" "static"].
 - `security_group_ids` (Set of String) The security groups of the instance. If not provided will be set to the default security group.
 - `ssh_key_ids` (Set of String) The ssh keys of the instance.
   - If the value of this attribute changes, Terraform will destroy and recreate the resource.

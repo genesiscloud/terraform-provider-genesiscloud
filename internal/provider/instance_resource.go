@@ -104,6 +104,10 @@ func (r *InstanceResource) Schema(ctx context.Context, req resource.SchemaReques
 				MarkdownDescription: "The human-readable name for the instance.",
 				Required:            true,
 			}),
+			"floating_ip_id": resourceenhancer.Attribute(ctx, schema.StringAttribute{
+				MarkdownDescription: "The floating IP attached to the instance.",
+				Optional:            true,
+			}),
 			"password": resourceenhancer.Attribute(ctx, schema.StringAttribute{
 				MarkdownDescription: "The password to access the instance. " +
 					"Your password must have upper and lower chars, digits and length between 8-72. " +
@@ -142,18 +146,6 @@ func (r *InstanceResource) Schema(ctx context.Context, req resource.SchemaReques
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(), // immutable
 					// TODO: Could be changed outside of terraform via stop+start?
-				},
-			}),
-			"public_ip_type": resourceenhancer.Attribute(ctx, schema.StringAttribute{
-				MarkdownDescription: `When set to "static", the instance's public IP will not change between start and stop actions.`,
-				Optional:            true,
-				Computed:            true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.RequiresReplace(),
-					defaultplanmodifier.String(string(genesiscloud.InstancePublicIPTypeDynamic)),
-				},
-				Validators: []validator.String{
-					stringvalidator.OneOf(sliceStringify(genesiscloud.AllInstancePublicIPTypes)...),
 				},
 			}),
 			"region": resourceenhancer.Attribute(ctx, schema.StringAttribute{
@@ -258,6 +250,10 @@ func (r *InstanceResource) Create(ctx context.Context, req resource.CreateReques
 	body.Type = genesiscloud.InstanceType(data.Type.ValueString())
 	body.Image = data.Image.ValueString()
 
+	if !data.FloatingIpId.IsNull() {
+		body.FloatingIp = data.FloatingIpId.ValueStringPointer()
+	}
+
 	if data.Metadata != nil {
 		body.Metadata = &struct {
 			StartupScript *string                        `json:"startup_script,omitempty"`
@@ -289,7 +285,6 @@ func (r *InstanceResource) Create(ctx context.Context, req resource.CreateReques
 		body.Volumes = &volumeIds
 	}
 
-	body.PublicIpType = pointer(genesiscloud.InstancePublicIPType(data.PublicIpType.ValueString()))
 	body.Region = genesiscloud.Region(data.Region.ValueString())
 	body.PlacementOption = pointer(data.PlacementOption.ValueString())
 
@@ -493,7 +488,6 @@ func (r *InstanceResource) Delete(ctx context.Context, req resource.DeleteReques
 	instanceId := data.Id.ValueString()
 
 	response, err := r.client.DeleteInstanceWithResponse(ctx, instanceId)
-
 	if err != nil {
 		resp.Diagnostics.AddError("Client Error", generateErrorMessage("delete instance", err))
 		return

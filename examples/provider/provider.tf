@@ -75,12 +75,19 @@ resource "genesiscloud_security_group" "allow-https" {
   ]
 }
 
+resource "genesiscloud_floating_ip" "floating_ip" {
+  name        = "terraform-floating-ip"
+  description = "The description for you terraform floating IP."
+  region      = local.region
+  version     = "ipv4"
+}
+
 resource "genesiscloud_instance" "instance" {
   name   = "terraform-instance"
   region = local.region
 
-  image_id = local.image_id
-  type     = "vcpu-4_memory-12g_disk-80g_nvidia3080-1"
+  image = local.image_id
+  type  = "vcpu-4_memory-12g_disk-80g_nvidia3080-1"
 
   ssh_key_ids = [
     genesiscloud_ssh_key.alice.id,
@@ -91,6 +98,8 @@ resource "genesiscloud_instance" "instance" {
     genesiscloud_security_group.allow-http.id,
     genesiscloud_security_group.allow-https.id,
   ]
+
+  floating_ip_id = genesiscloud_floating_ip.floating_ip.id
 
   metadata = {
     startup_script = <<EOF
