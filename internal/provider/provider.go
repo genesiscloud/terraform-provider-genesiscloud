@@ -178,6 +178,7 @@ func (p *GenesisCloudProvider) Resources(ctx context.Context) []func() resource.
 		NewSSHKeyResource,
 		NewFloatingIPResource,
 		NewVolumeResource,
+		NewFilesystemResource,
 		NewSecurityGroupResource,
 		NewSnapshotResource,
 	}
