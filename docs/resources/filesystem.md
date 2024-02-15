@@ -52,7 +52,7 @@ resource "genesiscloud_filesystem" "example" {
 - `id` (String) A unique identifier for each filesystem. This is automatically generated.
 - `mount_base_path` (String) The base path on the server under which the mount point can be accessed.
 - `mount_endpoint_range` (List of String) The start and end IP of the mount endpoint range. Expressed as a array with two entries.
-- `status` (String) The filesystem status. Possible values are creating, created, deleting.
+- `status` (String) The filesystem status.
 
 <a id="nestedatt--timeouts"></a>
 ### Nested Schema for `timeouts`

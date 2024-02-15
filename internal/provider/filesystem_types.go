@@ -57,11 +57,13 @@ func (data *FilesystemResourceModel) PopulateFromClientResponse(ctx context.Cont
 
 	if filesystem.MountBasePath != nil {
 		data.MountBasePath = types.StringValue(*filesystem.MountBasePath)
-	} else {
-		data.MountBasePath = types.StringValue("")
 	}
 
 	data.MountEndpointRange, diag = types.ListValueFrom(ctx, types.StringType, filesystem.MountEndpointRange)
+	if diag.HasError() {
+		return
+	}
+
 	data.Region = types.StringValue(string(filesystem.Region))
 	data.Size = types.Int64Value(int64(filesystem.Size))
 	data.Status = types.StringValue(string(filesystem.Status))

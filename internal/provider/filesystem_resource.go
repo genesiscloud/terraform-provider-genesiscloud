@@ -14,6 +14,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -95,7 +96,7 @@ func (r *FilesystemResource) Schema(ctx context.Context, req resource.SchemaRequ
 				},
 			}),
 			"status": resourceenhancer.Attribute(ctx, schema.StringAttribute{
-				MarkdownDescription: "The filesystem status. Possible values are creating, created, deleting.",
+				MarkdownDescription: "The filesystem status.",
 				Computed:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(), // immutable
@@ -112,6 +113,9 @@ func (r *FilesystemResource) Schema(ctx context.Context, req resource.SchemaRequ
 				ElementType:         types.StringType,
 				MarkdownDescription: "The start and end IP of the mount endpoint range. Expressed as a array with two entries.",
 				Computed:            true,
+				PlanModifiers: []planmodifier.List{
+					listplanmodifier.UseStateForUnknown(), // immutable
+				},
 			}),
 			"type": resourceenhancer.Attribute(ctx, schema.StringAttribute{
 				MarkdownDescription: "The storage type of the filesystem.",
@@ -220,7 +224,7 @@ func (r *FilesystemResource) Create(ctx context.Context, req resource.CreateRequ
 		}
 
 		status := filesystemResponse.Filesystem.Status
-		if status == "created" || status == "available" || status == "in-use" || status == "error" {
+		if status == "created" || status == "error" {
 			resp.Diagnostics.Append(data.PopulateFromClientResponse(ctx, &filesystemResponse.Filesystem)...)
 			if resp.Diagnostics.HasError() {
 				return
@@ -305,6 +309,7 @@ func (r *FilesystemResource) Update(ctx context.Context, req resource.UpdateRequ
 
 	body.Name = pointer(data.Name.ValueString())
 	body.Description = pointer(data.Description.ValueString())
+	body.Size = pointer(int(data.Size.ValueInt64()))
 
 	filesystemId := data.Id.ValueString()
 
