@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/genesiscloud/genesiscloud-go"
-	"github.com/genesiscloud/terraform-provider-genesiscloud/internal/defaultplanmodifier"
 	"github.com/genesiscloud/terraform-provider-genesiscloud/internal/resourceenhancer"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework-validators/resourcevalidator"
@@ -128,7 +127,6 @@ func (r *InstanceResource) Schema(ctx context.Context, req resource.SchemaReques
 				Computed:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
-					defaultplanmodifier.String("AUTO"),
 				},
 				Validators: []validator.String{},
 			}),
