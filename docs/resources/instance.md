@@ -51,7 +51,6 @@ resource "genesiscloud_instance" "example" {
   - The string length must be at least 16.
 - `placement_option` (String) The placement option identifier in which instances are physically located relative to each other within a zone.
   - If the value of this attribute changes, Terraform will destroy and recreate the resource.
-  - Sets the default value "AUTO" if the attribute is not set.
 - `security_group_ids` (Set of String) The security groups of the instance. If not provided will be set to the default security group.
 - `ssh_key_ids` (Set of String) The ssh keys of the instance.
   - If the value of this attribute changes, Terraform will destroy and recreate the resource.
