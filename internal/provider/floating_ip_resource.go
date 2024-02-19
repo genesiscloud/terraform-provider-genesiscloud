@@ -139,10 +139,7 @@ func (r *FloatingIPResource) Create(ctx context.Context, req resource.CreateRequ
 
 	body.Name = data.Name.ValueString()
 	body.Region = genesiscloud.Region(data.Region.ValueString())
-	body.Description = data.Description.ValueStringPointer()
-
-	// TODO: add this back when we support ipv6
-	// body.Version = &genesiscloud.CreateFloatingIPJSONBodyVersion(data.Version.ValueString())
+	body.Description = pointer(data.Description.ValueString())
 
 	response, err := r.client.CreateFloatingIPWithResponse(ctx, body)
 	if err != nil {
@@ -160,7 +157,7 @@ func (r *FloatingIPResource) Create(ctx context.Context, req resource.CreateRequ
 		return
 	}
 
-	resp.Diagnostics.Append(data.PopulateFromClientResponse(ctx, floatingIPResponse.FloatingIp)...)
+	resp.Diagnostics.Append(data.PopulateFromClientResponse(ctx, &floatingIPResponse.FloatingIp)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -169,6 +166,56 @@ func (r *FloatingIPResource) Create(ctx context.Context, req resource.CreateRequ
 
 	// Save data into Terraform state
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
+	floatingIPId := floatingIPResponse.FloatingIp.Id
+
+	for {
+		err := r.client.PollingWait(ctx)
+		if err != nil {
+			resp.Diagnostics.AddError("Polling Error", generateErrorMessage("polling floatingIP", err))
+			return
+		}
+
+		tflog.Trace(ctx, "polling a floatingIP resource")
+
+		response, err := r.client.GetFloatingIPWithResponse(ctx, floatingIPId)
+		if err != nil {
+			resp.Diagnostics.AddError("Client Error", generateErrorMessage("polling floatingIP", err))
+			return
+		}
+
+		floatingIPResponse := response.JSON200
+		if floatingIPResponse == nil {
+			resp.Diagnostics.AddError("Client Error", generateClientErrorMessage("polling floatingIP", ErrorResponse{
+				Body:         response.Body,
+				HTTPResponse: response.HTTPResponse,
+				Error:        response.JSONDefault,
+			}))
+			return
+		}
+
+		status := floatingIPResponse.FloatingIp.Status
+		if status == "created" || status == "error" {
+			resp.Diagnostics.Append(data.PopulateFromClientResponse(ctx, &floatingIPResponse.FloatingIp)...)
+			if resp.Diagnostics.HasError() {
+				return
+			}
+
+			// Save data into Terraform state
+			resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
+			if resp.Diagnostics.HasError() {
+				return
+			}
+
+			if status == "error" {
+				resp.Diagnostics.AddError("Provisioning Error", generateErrorMessage("polling floatingIP", ErrResourceInErrorState))
+			}
+			return
+		}
+	}
 }
 
 func (r *FloatingIPResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
@@ -205,7 +252,7 @@ func (r *FloatingIPResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 
-	resp.Diagnostics.Append(data.PopulateFromClientResponse(ctx, floatingIPResponse.FloatingIp)...)
+	resp.Diagnostics.Append(data.PopulateFromClientResponse(ctx, &floatingIPResponse.FloatingIp)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -255,7 +302,7 @@ func (r *FloatingIPResource) Update(ctx context.Context, req resource.UpdateRequ
 		return
 	}
 
-	resp.Diagnostics.Append(data.PopulateFromClientResponse(ctx, floatingIPResponse.FloatingIp)...)
+	resp.Diagnostics.Append(data.PopulateFromClientResponse(ctx, &floatingIPResponse.FloatingIp)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
