@@ -2,14 +2,11 @@ package provider
 
 import (
 	"context"
-	"fmt"
-	"strconv"
 	"time"
 
 	"github.com/genesiscloud/genesiscloud-go"
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
-	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -49,22 +46,7 @@ func (data *SnapshotResourceModel) PopulateFromClientResponse(ctx context.Contex
 	data.Name = types.StringValue(snapshot.Name)
 	data.Region = types.StringValue(string(snapshot.Region))
 	data.InstanceId = types.StringValue(string(snapshot.ResourceId))
-
-	data.Size = types.Int64Null()
-	if snapshot.Size != nil {
-		i, err := strconv.ParseInt(*snapshot.Size, 10, 64)
-		if err != nil {
-			diag.AddAttributeError(
-				path.Root("size"),
-				"Unmarshalling failed",
-				fmt.Sprintf("Failed to unmarshal BigInt response: %q", *snapshot.Size),
-			)
-			return
-		}
-
-		data.Size = types.Int64Value(i)
-	}
-
+	data.Size = types.Int64Value(int64(snapshot.Size))
 	data.Status = types.StringValue(string(snapshot.Status))
 
 	return
