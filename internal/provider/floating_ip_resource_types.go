@@ -58,6 +58,8 @@ func (data *FloatingIPResourceModel) PopulateFromClientResponse(ctx context.Cont
 
 	if floatingIP.IpAddress != nil {
 		data.IpAddress = types.StringValue(*floatingIP.IpAddress)
+	} else {
+		data.IpAddress = types.StringNull()
 	}
 	return
 }
