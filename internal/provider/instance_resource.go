@@ -122,7 +122,7 @@ func (r *InstanceResource) Schema(ctx context.Context, req resource.SchemaReques
 				},
 			}),
 			"placement_option": resourceenhancer.Attribute(ctx, schema.StringAttribute{
-				MarkdownDescription: "The placement option identifier in which instances are physically located relative to each other within a zone.",
+				MarkdownDescription: "The placement option identifier in which instances are physically located relative to each other within a zone. For example A or B.",
 				Optional:            true,
 				Computed:            true,
 				PlanModifiers: []planmodifier.String{
