@@ -284,7 +284,10 @@ func (r *InstanceResource) Create(ctx context.Context, req resource.CreateReques
 	}
 
 	body.Region = genesiscloud.Region(data.Region.ValueString())
-	body.PlacementOption = pointer(data.PlacementOption.ValueString())
+
+	if !data.PlacementOption.IsNull() && !data.PlacementOption.IsUnknown() {
+		body.PlacementOption = pointer(data.PlacementOption.ValueString())
+	}
 
 	response, err := r.client.CreateInstanceWithResponse(ctx, body)
 	if err != nil {
