@@ -49,7 +49,7 @@ resource "genesiscloud_instance" "example" {
 - `password` (String, Sensitive) The password to access the instance. Your password must have upper and lower chars, digits and length between 8-72. **Please Note**: Only one of `ssh_keys` or `password` can be provided. Password is less secure - we recommend you use an SSH key-pair.
   - If the value of this attribute changes, Terraform will destroy and recreate the resource.
   - The string length must be at least 16.
-- `placement_option` (String) The placement option identifier in which instances are physically located relative to each other within a zone.
+- `placement_option` (String) The placement option identifier in which instances are physically located relative to each other within a zone. For example A or B.
   - If the value of this attribute changes, Terraform will destroy and recreate the resource.
 - `security_group_ids` (Set of String) The security groups of the instance. If not provided will be set to the default security group.
 - `ssh_key_ids` (Set of String) The ssh keys of the instance.

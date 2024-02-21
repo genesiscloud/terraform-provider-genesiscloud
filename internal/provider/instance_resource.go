@@ -122,7 +122,7 @@ func (r *InstanceResource) Schema(ctx context.Context, req resource.SchemaReques
 				},
 			}),
 			"placement_option": resourceenhancer.Attribute(ctx, schema.StringAttribute{
-				MarkdownDescription: "The placement option identifier in which instances are physically located relative to each other within a zone.",
+				MarkdownDescription: "The placement option identifier in which instances are physically located relative to each other within a zone. For example A or B.",
 				Optional:            true,
 				Computed:            true,
 				PlanModifiers: []planmodifier.String{
@@ -284,7 +284,10 @@ func (r *InstanceResource) Create(ctx context.Context, req resource.CreateReques
 	}
 
 	body.Region = genesiscloud.Region(data.Region.ValueString())
-	body.PlacementOption = pointer(data.PlacementOption.ValueString())
+
+	if !data.PlacementOption.IsNull() && !data.PlacementOption.IsUnknown() {
+		body.PlacementOption = pointer(data.PlacementOption.ValueString())
+	}
 
 	response, err := r.client.CreateInstanceWithResponse(ctx, body)
 	if err != nil {
