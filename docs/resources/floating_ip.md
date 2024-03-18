@@ -37,6 +37,7 @@ resource "genesiscloud_floating_ip" "floating_ip" {
 ### Optional
 
 - `description` (String) The human-readable description set for the floating IP.
+  - Sets the default value "" if the attribute is not set.
 - `timeouts` (Attributes) (see [below for nested schema](#nestedatt--timeouts))
 
 ### Read-Only
