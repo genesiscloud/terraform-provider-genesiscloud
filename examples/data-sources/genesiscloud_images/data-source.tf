@@ -1,6 +1,6 @@
-data "genesiscloud_images" "base-os-images" {
+data "genesiscloud_images" "cloud-images" {
   filter = {
-    type = "base-os"
+    type = "cloud-image"
   }
 }
 

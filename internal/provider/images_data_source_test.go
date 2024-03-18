@@ -8,7 +8,7 @@ import (
 
 const testAccImagesDataSourceConfig = `
 data "genesiscloud_images" "test" {
-	type = "base-os"
+	type = "cloud-image"
 }
 `
 
