@@ -27,10 +27,6 @@ data "genesiscloud_images" "base-os" {
   }
 }
 
-locals {
-  image_id = data.genesiscloud_images.base-os.images[index(data.genesiscloud_images.base-os.images.*.name, "Ubuntu 20.04")].id
-}
-
 resource "genesiscloud_ssh_key" "alice" {
   name       = "alice"
   public_key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBOpdKM8wSI07+PO4xLDL7zW/kNWGbdFXeHyBU1TRlBn alice@example.com"
@@ -86,7 +82,7 @@ resource "genesiscloud_instance" "instance" {
   name   = "terraform-instance"
   region = local.region
 
-  image = local.image_id
+  image = "ubuntu-22.04"
   type  = "vcpu-4_memory-12g_disk-80g_nvidia3080-1"
 
   ssh_key_ids = [

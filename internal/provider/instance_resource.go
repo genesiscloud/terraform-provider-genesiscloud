@@ -71,8 +71,10 @@ func (r *InstanceResource) Schema(ctx context.Context, req resource.SchemaReques
 				},
 			}),
 			"image": resourceenhancer.Attribute(ctx, schema.StringAttribute{
-				MarkdownDescription: "The source image or snapshot of the instance.",
-				Required:            true,
+				MarkdownDescription: "The source image id, image slug or snapshot id of the instance. " +
+					"The image version can also specified together with the image slug in this format `<image-slug>:<version>`. " +
+					"Learn more about images [here](https://developers.genesiscloud.com/images).",
+				Required: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
