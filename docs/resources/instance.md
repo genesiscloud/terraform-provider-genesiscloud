@@ -31,7 +31,7 @@ resource "genesiscloud_instance" "example" {
 
 ### Required
 
-- `image` (String) The source image or snapshot of the instance.
+- `image` (String) The source image id, image slug or snapshot id of the instance. The image version can also specified together with the image slug in this format `<image-slug>:<version>`. Learn more about images [here](https://developers.genesiscloud.com/images).
   - If the value of this attribute changes, Terraform will destroy and recreate the resource.
 - `name` (String) The human-readable name for the instance.
 - `region` (String) The region identifier.
