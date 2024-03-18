@@ -79,6 +79,10 @@ func (r *FloatingIPResource) Schema(ctx context.Context, req resource.SchemaRequ
 			"description": resourceenhancer.Attribute(ctx, schema.StringAttribute{
 				MarkdownDescription: "The human-readable description set for the floating IP.",
 				Optional:            true,
+				Computed:            true,
+				PlanModifiers: []planmodifier.String{
+					defaultplanmodifier.String(""),
+				},
 			}),
 			"status": resourceenhancer.Attribute(ctx, schema.StringAttribute{
 				MarkdownDescription: "The floating IP status.",
