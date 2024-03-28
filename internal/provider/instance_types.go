@@ -35,6 +35,9 @@ type InstanceResourceModel struct {
 	// Metadata Option to provide metadata. Currently supported is `startup_script`.
 	Metadata *InstanceMetadataModel `tfsdk:"metadata"`
 
+	// DiskSize The disk size of the instance in GiB.
+	DiskSize types.Int64 `tfsdk:"disk_size"`
+
 	// Name The human-readable name for the instance.
 	Name types.String `tfsdk:"name"`
 
@@ -128,6 +131,10 @@ func (data *InstanceResourceModel) PopulateFromClientResponse(ctx context.Contex
 
 	if instance.FloatingIp != nil {
 		data.FloatingIpId = types.StringValue(instance.FloatingIp.Id)
+	}
+
+	if instance.DiskSize != nil {
+		data.DiskSize = types.Int64Value(int64(*instance.DiskSize))
 	}
 
 	data.Region = types.StringValue(string(instance.Region))
