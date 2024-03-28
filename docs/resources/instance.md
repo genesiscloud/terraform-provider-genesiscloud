@@ -42,6 +42,7 @@ resource "genesiscloud_instance" "example" {
 
 ### Optional
 
+- `disk_size` (Number) The disk size of the instance in GB.
 - `floating_ip_id` (String) The floating IP attached to the instance.
 - `hostname` (String) The hostname of your instance. If not provided will be initially set to the `name` attribute.
   - If the value of this attribute is configured and changes, Terraform will destroy and recreate the resource.

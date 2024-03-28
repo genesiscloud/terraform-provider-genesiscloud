@@ -79,6 +79,11 @@ func (r *InstanceResource) Schema(ctx context.Context, req resource.SchemaReques
 					stringplanmodifier.RequiresReplace(),
 				},
 			}),
+			"disk_size": resourceenhancer.Attribute(ctx, schema.Int64Attribute{
+				MarkdownDescription: "The disk size of the instance in GB.",
+				Optional:            true,
+				Computed:            true,
+			}),
 			"image_id": resourceenhancer.Attribute(ctx, schema.StringAttribute{
 				MarkdownDescription: "The resulting image ID of the instance.",
 				Computed:            true,
@@ -263,6 +268,11 @@ func (r *InstanceResource) Create(ctx context.Context, req resource.CreateReques
 		}
 	}
 
+	if !data.DiskSize.IsNull() {
+		diskSize := pointer(int(data.DiskSize.ValueInt64()))
+		body.DiskSize = diskSize
+	}
+
 	if !data.Password.IsNull() && !data.Password.IsUnknown() {
 		body.Password = pointer(data.Password.ValueString())
 	}
@@ -441,6 +451,11 @@ func (r *InstanceResource) Update(ctx context.Context, req resource.UpdateReques
 		var volumeIds []string
 		data.VolumeIds.ElementsAs(ctx, &volumeIds, false)
 		body.Volumes = &volumeIds
+	}
+
+	if !data.DiskSize.IsNull() {
+		diskSize := pointer(int(data.DiskSize.ValueInt64()))
+		body.DiskSize = diskSize
 	}
 
 	instanceId := data.Id.ValueString()

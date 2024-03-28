@@ -114,6 +114,8 @@ resource "genesiscloud_instance" "instance" {
 
   floating_ip_id = genesiscloud_floating_ip.floating_ip.id
 
+  disk_size = 128
+
   metadata = {
     startup_script = <<EOF
 #!/bin/bash
