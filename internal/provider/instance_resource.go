@@ -133,6 +133,7 @@ func (r *InstanceResource) Schema(ctx context.Context, req resource.SchemaReques
 				Optional:            true,
 				Computed:            true,
 				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(), // immutable
 					stringplanmodifier.RequiresReplace(),
 				},
 				Validators: []validator.String{},
