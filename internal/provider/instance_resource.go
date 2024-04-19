@@ -256,7 +256,7 @@ func (r *InstanceResource) Create(ctx context.Context, req resource.CreateReques
 	body.Type = genesiscloud.InstanceType(data.Type.ValueString())
 	body.Image = data.Image.ValueString()
 
-	if !data.FloatingIpId.IsNull() {
+	if !data.FloatingIpId.IsNull() && !data.FloatingIpId.IsUnknown() {
 		body.FloatingIp = data.FloatingIpId.ValueStringPointer()
 	}
 
@@ -269,7 +269,7 @@ func (r *InstanceResource) Create(ctx context.Context, req resource.CreateReques
 		}
 	}
 
-	if !data.DiskSize.IsNull() {
+	if !data.DiskSize.IsNull() && !data.DiskSize.IsUnknown() {
 		diskSize := pointer(int(data.DiskSize.ValueInt64()))
 		body.DiskSize = diskSize
 	}
@@ -454,7 +454,7 @@ func (r *InstanceResource) Update(ctx context.Context, req resource.UpdateReques
 		body.Volumes = &volumeIds
 	}
 
-	if !data.DiskSize.IsNull() {
+	if !data.DiskSize.IsNull() && !data.DiskSize.IsUnknown() {
 		diskSize := pointer(int(data.DiskSize.ValueInt64()))
 		body.DiskSize = diskSize
 	}
