@@ -13,7 +13,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/listplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
@@ -88,9 +87,6 @@ func (r *FilesystemResource) Schema(ctx context.Context, req resource.SchemaRequ
 			"size": resourceenhancer.Attribute(ctx, schema.Int64Attribute{
 				MarkdownDescription: "The storage size of this filesystem given in GiB.",
 				Required:            true,
-				PlanModifiers: []planmodifier.Int64{
-					int64planmodifier.RequiresReplace(),
-				},
 				Validators: []validator.Int64{
 					int64validator.AtLeast(1),
 				},
