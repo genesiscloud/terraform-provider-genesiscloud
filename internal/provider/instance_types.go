@@ -79,6 +79,9 @@ type InstanceResourceModel struct {
 	// FloatingIp The floating IP of the instance.
 	FloatingIpId types.String `tfsdk:"floating_ip_id"`
 
+	// ReservationId The id of the reservation the instance is associated with.
+	ReservationId types.String `tfsdk:"reservation_id"`
+
 	// Internal
 
 	// Timeouts The resource timeouts
@@ -131,6 +134,10 @@ func (data *InstanceResourceModel) PopulateFromClientResponse(ctx context.Contex
 
 	if instance.FloatingIp != nil {
 		data.FloatingIpId = types.StringValue(instance.FloatingIp.Id)
+	}
+
+	if instance.ReservationId != nil {
+		data.ReservationId = types.StringValue(*instance.ReservationId)
 	}
 
 	if instance.DiskSize != nil {
