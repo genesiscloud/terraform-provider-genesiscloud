@@ -212,6 +212,10 @@ func (r *InstanceResource) Schema(ctx context.Context, req resource.SchemaReques
 
 				// TODO: Update of this field does not work in pulumi
 			}),
+			"reservation_id": resourceenhancer.Attribute(ctx, schema.StringAttribute{
+				MarkdownDescription: "The id of the reservation the instance is associated with.",
+				Optional:            true,
+			}),
 
 			// Internal
 			"timeouts": timeouts.AttributesAll(ctx),
@@ -258,6 +262,10 @@ func (r *InstanceResource) Create(ctx context.Context, req resource.CreateReques
 
 	if !data.FloatingIpId.IsNull() && !data.FloatingIpId.IsUnknown() {
 		body.FloatingIp = data.FloatingIpId.ValueStringPointer()
+	}
+
+	if !data.ReservationId.IsNull() && !data.ReservationId.IsUnknown() {
+		body.ReservationId = data.ReservationId.ValueStringPointer()
 	}
 
 	if data.Metadata != nil {
@@ -457,6 +465,10 @@ func (r *InstanceResource) Update(ctx context.Context, req resource.UpdateReques
 	if !data.DiskSize.IsNull() && !data.DiskSize.IsUnknown() {
 		diskSize := pointer(int(data.DiskSize.ValueInt64()))
 		body.DiskSize = diskSize
+	}
+
+	if !data.ReservationId.IsNull() && !data.ReservationId.IsUnknown() {
+		body.ReservationId = data.ReservationId.ValueStringPointer()
 	}
 
 	instanceId := data.Id.ValueString()
