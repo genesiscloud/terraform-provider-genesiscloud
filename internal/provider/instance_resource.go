@@ -63,6 +63,13 @@ func (r *InstanceResource) Schema(ctx context.Context, req resource.SchemaReques
 					stringplanmodifier.UseStateForUnknown(), // immutable
 				},
 			}),
+			"dns_name": resourceenhancer.Attribute(ctx, schema.StringAttribute{
+				MarkdownDescription: "The dns name of the instance.",
+				Computed:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(), // immutable
+				},
+			}),
 			"id": resourceenhancer.Attribute(ctx, schema.StringAttribute{
 				MarkdownDescription: "The unique ID of the instance.",
 				Computed:            true,
