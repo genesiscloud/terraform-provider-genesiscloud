@@ -62,6 +62,7 @@ resource "genesiscloud_instance" "example" {
 ### Read-Only
 
 - `created_at` (String) The timestamp when this image was created in RFC 3339.
+- `dns_name` (String) The dns name of the instance.
 - `id` (String) The unique ID of the instance.
 - `image_id` (String) The resulting image ID of the instance.
 - `private_ip` (String) The private IPv4 IP-Address (IPv4 address).

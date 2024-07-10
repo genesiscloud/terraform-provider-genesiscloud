@@ -23,6 +23,9 @@ type InstanceResourceModel struct {
 	// Hostname The hostname of your instance.
 	Hostname types.String `tfsdk:"hostname"`
 
+	// DnsName The dns name of your instance.
+	DnsName types.String `tfsdk:"dns_name"`
+
 	// Id The unique ID of the instance.
 	Id types.String `tfsdk:"id"`
 
@@ -92,6 +95,7 @@ func (data *InstanceResourceModel) PopulateFromClientResponse(ctx context.Contex
 	data.Id = types.StringValue(instance.Id)
 	data.Name = types.StringValue(instance.Name)
 	data.Hostname = types.StringValue(instance.Hostname)
+	data.DnsName = types.StringValue(instance.DnsName)
 	data.Type = types.StringValue(string(instance.Type))
 	data.ImageId = types.StringValue(instance.Image.Id)
 
