@@ -175,6 +175,7 @@ func (p *GenesisCloudProvider) Configure(ctx context.Context, req provider.Confi
 func (p *GenesisCloudProvider) Resources(ctx context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		NewInstanceResource,
+		NewInstanceStatusResource,
 		NewSSHKeyResource,
 		NewFloatingIPResource,
 		NewVolumeResource,

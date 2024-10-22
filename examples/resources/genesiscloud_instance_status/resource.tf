@@ -9,3 +9,9 @@ resource "genesiscloud_instance" "example" {
     "my-ssh-key-id"
   ]
 }
+
+
+resource "genesiscloud_instance_status" "example" {
+  instance_id = genesiscloud_instance.example.id
+  status      = "active"
+}

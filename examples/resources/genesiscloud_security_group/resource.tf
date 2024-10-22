@@ -1,6 +1,6 @@
 resource "genesiscloud_security_group" "allow-https" {
   name   = "allow-https"
-  region = "ARC-IS-HAF-1"
+  region = "NORD-NO-KRS-1"
   rules = [
     {
       direction      = "ingress"

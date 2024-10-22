@@ -15,9 +15,9 @@ Instance resource
 ```terraform
 resource "genesiscloud_instance" "example" {
   name   = "example"
-  region = "ARC-IS-HAF-1"
+  region = "NORD-NO-KRS-1"
 
-  image = "my-image-id"
+  image = "ubuntu:22.04"
   type  = "vcpu-2_memory-4g"
 
   ssh_key_ids = [

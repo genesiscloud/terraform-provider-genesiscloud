@@ -15,7 +15,7 @@ Volume resource
 ```terraform
 resource "genesiscloud_volume" "example" {
   name   = "example"
-  region = "ARC-IS-HAF-1"
+  region = "NORD-NO-KRS-1"
   size   = 50
   type   = "hdd"
 }

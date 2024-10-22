@@ -22,7 +22,7 @@ data "genesiscloud_images" "cloud-images" {
 data "genesiscloud_images" "snapshots" {
   filter = {
     type   = "snapshot"
-    region = "ARC-IS-HAF-1"
+    region = "NORD-NO-KRS-1"
   }
 }
 
