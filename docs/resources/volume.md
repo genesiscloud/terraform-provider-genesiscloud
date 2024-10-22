@@ -31,7 +31,6 @@ resource "genesiscloud_volume" "example" {
   - If the value of this attribute changes, Terraform will destroy and recreate the resource.
   - The value must be one of: ["ARC-IS-HAF-1" "EUC-DE-MUC-1" "NORD-NO-KRS-1"].
 - `size` (Number) The storage size of this volume given in GiB.
-  - If the value of this attribute changes, Terraform will destroy and recreate the resource.
   - The value must be at least 1.
 - `type` (String) The storage type of the volume.
   - If the value of this attribute changes, Terraform will destroy and recreate the resource.

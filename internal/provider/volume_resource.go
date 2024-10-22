@@ -13,7 +13,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/int64planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
@@ -86,9 +85,6 @@ func (r *VolumeResource) Schema(ctx context.Context, req resource.SchemaRequest,
 			"size": resourceenhancer.Attribute(ctx, schema.Int64Attribute{
 				MarkdownDescription: "The storage size of this volume given in GiB.",
 				Required:            true,
-				PlanModifiers: []planmodifier.Int64{
-					int64planmodifier.RequiresReplace(),
-				},
 				Validators: []validator.Int64{
 					int64validator.AtLeast(1),
 				},
@@ -292,6 +288,7 @@ func (r *VolumeResource) Update(ctx context.Context, req resource.UpdateRequest,
 
 	body.Name = pointer(data.Name.ValueString())
 	body.Description = pointer(data.Description.ValueString())
+	body.Size = pointer(int(data.Size.ValueInt64()))
 
 	volumeId := data.Id.ValueString()
 

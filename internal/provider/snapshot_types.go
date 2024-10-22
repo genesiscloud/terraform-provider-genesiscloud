@@ -25,7 +25,7 @@ type SnapshotResourceModel struct {
 	// InstanceId The id of the instance that was snapshotted.
 	InstanceId types.String `tfsdk:"instance_id"`
 
-	// Size The storage size of this snapshot given in bytes.
+	// Size The storage size of this snapshot given in GiB.
 	Size types.Int64 `tfsdk:"size"`
 
 	// Status The snapshot status.

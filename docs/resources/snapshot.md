@@ -45,7 +45,7 @@ resource "genesiscloud_snapshot" "example" {
 - `created_at` (String) The timestamp when this snapshot was created in RFC 3339.
 - `id` (String) The unique ID of the snapshot.
 - `region` (String) The region identifier.
-- `size` (Number) The storage size of this snapshot given in bytes.
+- `size` (Number) The storage size of this snapshot given in GiB.
 - `status` (String) The snapshot status.
 
 <a id="nestedatt--timeouts"></a>

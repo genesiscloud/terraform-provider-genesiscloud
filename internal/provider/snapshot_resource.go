@@ -77,7 +77,7 @@ func (r *SnapshotResource) Schema(ctx context.Context, req resource.SchemaReques
 				},
 			}),
 			"size": resourceenhancer.Attribute(ctx, schema.Int64Attribute{
-				MarkdownDescription: "The storage size of this snapshot given in bytes.",
+				MarkdownDescription: "The storage size of this snapshot given in GiB.",
 				Computed:            true,
 				PlanModifiers: []planmodifier.Int64{
 					int64planmodifier.UseStateForUnknown(), // immutable
