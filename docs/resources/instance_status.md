@@ -38,7 +38,7 @@ resource "genesiscloud_instance_status" "example" {
 ### Required
 
 - `instance_id` (String) The id of the instance this refers to.
-  - If the value of this attribute changes, Terraform will destroy and recreate the resource.
+  - If the value of this attribute changes, the resource will be replaced.
 - `status` (String) The target instance status.
   - The value must be one of: ["active" "stopped"].
 

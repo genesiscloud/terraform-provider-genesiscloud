@@ -26,7 +26,7 @@ resource "genesiscloud_ssh_key" "example" {
 
 - `name` (String) The human-readable name for the SSH key.
 - `public_key` (String) SSH public key.
-  - If the value of this attribute changes, Terraform will destroy and recreate the resource.
+  - If the value of this attribute changes, the resource will be replaced.
 
 ### Optional
 

@@ -27,10 +27,10 @@ resource "genesiscloud_floating_ip" "floating_ip" {
 
 - `name` (String) The human-readable name for the floating IP.
 - `region` (String) The region identifier.
-  - If the value of this attribute changes, Terraform will destroy and recreate the resource.
+  - If the value of this attribute changes, the resource will be replaced.
   - The value must be one of: ["ARC-IS-HAF-1" "EUC-DE-MUC-1" "NORD-NO-KRS-1"].
 - `version` (String) The version of the floating IP.
-  - If the value of this attribute changes, Terraform will destroy and recreate the resource.
+  - If the value of this attribute changes, the resource will be replaced.
   - The value must be one of: ["ipv4"].
 
 ### Optional
