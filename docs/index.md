@@ -41,7 +41,7 @@ provider "genesiscloud" {
 # Create an instance:
 
 locals {
-  region = "ARC-IS-HAF-1"
+  region = "NORD-NO-KRS-1"
 }
 
 resource "genesiscloud_ssh_key" "alice" {
@@ -100,7 +100,7 @@ resource "genesiscloud_instance" "instance" {
   region = local.region
 
   image = "ubuntu-22.04"
-  type  = "vcpu-4_memory-12g_nvidia-rtx-3080-1"
+  type  = "vcpu-4_memory-16g_nvidia-rtx-3080-1"
 
   ssh_key_ids = [
     genesiscloud_ssh_key.alice.id,
