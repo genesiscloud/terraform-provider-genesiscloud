@@ -461,14 +461,24 @@ func (r *InstanceResource) Update(ctx context.Context, req resource.UpdateReques
 		var securityGroups []string
 		data.SecurityGroupIds.ElementsAs(ctx, &securityGroups, false)
 		body.SecurityGroups = &genesiscloud.InstanceUpdateSecurityGroups{}
-		body.SecurityGroups.FromInstanceUpdateSecurityGroupsList(securityGroups)
+
+		err := body.SecurityGroups.FromInstanceUpdateSecurityGroupsList(securityGroups)
+		if err != nil {
+			resp.Diagnostics.AddError("Client Error", generateErrorMessage("update instance", err))
+			return
+		}
 	}
 
 	if !data.VolumeIds.IsNull() && !data.VolumeIds.IsUnknown() {
 		var volumeIds []string
 		data.VolumeIds.ElementsAs(ctx, &volumeIds, false)
 		body.Volumes = &genesiscloud.InstanceUpdateVolumes{}
-		body.Volumes.FromInstanceUpdateVolumesList(volumeIds)
+
+		err := body.Volumes.FromInstanceUpdateVolumesList(volumeIds)
+		if err != nil {
+			resp.Diagnostics.AddError("Client Error", generateErrorMessage("update instance", err))
+			return
+		}
 	}
 
 	if !data.DiskSize.IsNull() && !data.DiskSize.IsUnknown() {
