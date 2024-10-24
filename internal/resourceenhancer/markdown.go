@@ -22,6 +22,8 @@ func PlanModifiersMarkdownDescription[T planmodifier.Describer](ctx context.Cont
 		desc := mod.MarkdownDescription(ctx)
 		if desc == "Once set, the value of this attribute in state will not change." {
 			continue
+		} else if desc == "If the value of this attribute changes, Terraform will destroy and recreate the resource." {
+			desc = "If the value of this attribute changes, the resource will be replaced."
 		}
 
 		response += "\n  - " + patchMarkdown(desc)

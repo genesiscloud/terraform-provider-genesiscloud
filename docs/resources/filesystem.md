@@ -29,12 +29,12 @@ resource "genesiscloud_filesystem" "example" {
 
 - `name` (String) The human-readable name for the filesystem.
 - `region` (String) The identifier for the region this filesystem exists in.
-  - If the value of this attribute changes, Terraform will destroy and recreate the resource.
+  - If the value of this attribute changes, the resource will be replaced.
   - The value must be one of: ["ARC-IS-HAF-1" "EUC-DE-MUC-1" "NORD-NO-KRS-1"].
 - `size` (Number) The storage size of this filesystem given in GiB.
   - The value must be at least 1.
 - `type` (String) The storage type of the filesystem.
-  - If the value of this attribute changes, Terraform will destroy and recreate the resource.
+  - If the value of this attribute changes, the resource will be replaced.
   - The value must be one of: ["vast"].
 
 ### Optional

@@ -31,7 +31,7 @@ resource "genesiscloud_snapshot" "example" {
 ### Required
 
 - `instance_id` (String) The id of the instance to snapshot.
-  - If the value of this attribute changes, Terraform will destroy and recreate the resource.
+  - If the value of this attribute changes, the resource will be replaced.
 - `name` (String) The human-readable name for the snapshot.
 
 ### Optional
@@ -45,7 +45,7 @@ resource "genesiscloud_snapshot" "example" {
 - `created_at` (String) The timestamp when this snapshot was created in RFC 3339.
 - `id` (String) The unique ID of the snapshot.
 - `region` (String) The region identifier.
-- `size` (Number) The storage size of this snapshot given in bytes.
+- `size` (Number) The storage size of this snapshot given in GiB.
 - `status` (String) The snapshot status.
 
 <a id="nestedatt--timeouts"></a>

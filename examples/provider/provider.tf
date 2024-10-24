@@ -65,10 +65,9 @@ resource "genesiscloud_security_group" "allow-https" {
 }
 
 resource "genesiscloud_floating_ip" "floating_ip" {
-  name        = "terraform-floating-ip"
-  description = "The description for you terraform floating IP."
-  region      = local.region
-  version     = "ipv4"
+  name    = "terraform-floating-ip"
+  region  = local.region
+  version = "ipv4"
 }
 
 resource "genesiscloud_instance" "instance" {

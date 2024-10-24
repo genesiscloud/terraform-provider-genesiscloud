@@ -32,13 +32,13 @@ resource "genesiscloud_instance" "example" {
 ### Required
 
 - `image` (String) The source image id, image slug or snapshot id of the instance. The image version can also specified together with the image slug in this format `<image-slug>:<version>`. Learn more about images [here](https://developers.genesiscloud.com/images).
-  - If the value of this attribute changes, Terraform will destroy and recreate the resource.
+  - If the value of this attribute changes, the resource will be replaced.
 - `name` (String) The human-readable name for the instance.
 - `region` (String) The region identifier.
-  - If the value of this attribute changes, Terraform will destroy and recreate the resource.
+  - If the value of this attribute changes, the resource will be replaced.
   - The value must be one of: ["ARC-IS-HAF-1" "EUC-DE-MUC-1" "NORD-NO-KRS-1"].
 - `type` (String) The instance type identifier. Learn more about instance types [here](https://developers.genesiscloud.com/instances#instance-types).
-  - If the value of this attribute changes, Terraform will destroy and recreate the resource.
+  - If the value of this attribute changes, the resource will be replaced.
 
 ### Optional
 
@@ -48,14 +48,14 @@ resource "genesiscloud_instance" "example" {
   - If the value of this attribute is configured and changes, Terraform will destroy and recreate the resource.
 - `metadata` (Attributes) Option to provide metadata. Currently supported is `startup_script`. (see [below for nested schema](#nestedatt--metadata))
 - `password` (String, Sensitive) The password to access the instance. Your password must have upper and lower chars, digits and length between 8-72. **Please Note**: Only one of `ssh_keys` or `password` can be provided. Password is less secure - we recommend you use an SSH key-pair.
-  - If the value of this attribute changes, Terraform will destroy and recreate the resource.
+  - If the value of this attribute changes, the resource will be replaced.
   - The string length must be at least 16.
 - `placement_option` (String) The placement option identifier in which instances are physically located relative to each other within a zone. For example A or B.
-  - If the value of this attribute changes, Terraform will destroy and recreate the resource.
+  - If the value of this attribute changes, the resource will be replaced.
 - `reservation_id` (String) The id of the reservation the instance is associated with.
 - `security_group_ids` (Set of String) The security groups of the instance. If not provided will be set to the default security group.
 - `ssh_key_ids` (Set of String) The ssh keys of the instance.
-  - If the value of this attribute changes, Terraform will destroy and recreate the resource.
+  - If the value of this attribute changes, the resource will be replaced.
 - `timeouts` (Attributes) (see [below for nested schema](#nestedatt--timeouts))
 - `volume_ids` (Set of String) The volumes of the instance.
 
@@ -76,7 +76,7 @@ resource "genesiscloud_instance" "example" {
 Optional:
 
 - `startup_script` (String) A plain text bash script or "cloud-config" file that will be executed after the first instance boot. It is limited to 64 KiB in size. You can use it to configure your instance, e.g. installing the NVIDIA GPU driver. Learn more about [startup scripts and installing the GPU driver](https://support.genesiscloud.com/support/solutions/articles/47001122478).
-  - If the value of this attribute changes, Terraform will destroy and recreate the resource.
+  - If the value of this attribute changes, the resource will be replaced.
 
 
 <a id="nestedatt--timeouts"></a>

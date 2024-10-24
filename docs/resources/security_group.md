@@ -34,7 +34,7 @@ resource "genesiscloud_security_group" "allow-https" {
 
 - `name` (String) The human-readable name for the security group.
 - `region` (String) The region identifier.
-  - If the value of this attribute changes, Terraform will destroy and recreate the resource.
+  - If the value of this attribute changes, the resource will be replaced.
   - The value must be one of: ["ARC-IS-HAF-1" "EUC-DE-MUC-1" "NORD-NO-KRS-1"].
 - `rules` (Attributes List) (see [below for nested schema](#nestedatt--rules))
 
