@@ -131,7 +131,7 @@ func (d *ImagesDataSource) Read(ctx context.Context, req datasource.ReadRequest,
 	}
 
 	for page := 1; ; page++ {
-		response, err := d.client.ListImagesWithResponse(ctx, &genesiscloud.ListImagesParams{
+		response, err := d.client.ListImagesPaginatedWithResponse(ctx, &genesiscloud.ListImagesPaginatedParams{
 			Page:    pointer(page),
 			PerPage: pointer(100),
 			Type:    filterType,
