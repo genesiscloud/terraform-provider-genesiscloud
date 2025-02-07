@@ -62,16 +62,29 @@ func (r *SnapshotResource) Schema(ctx context.Context, req resource.SchemaReques
 				MarkdownDescription: "The human-readable name for the snapshot.",
 				Required:            true,
 			}),
+			"replicated_region": resourceenhancer.Attribute(ctx, schema.StringAttribute{
+				MarkdownDescription: "Target region for snapshot replication. When specified, also creates a copy of the snapshot in the given region. If omitted, the snapshot exists only in the current region.",
+				Required:            false,
+				Optional:            true,
+			}),
 			"region": resourceenhancer.Attribute(ctx, schema.StringAttribute{
-				MarkdownDescription: "The region identifier.",
+				MarkdownDescription: "The region identifier. Should only be explicity specified when using the 'source_snapshot_id'.",
+				Optional:            true,
 				Computed:            true,
 				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(), // immutable
+					stringplanmodifier.UseStateForUnknown(),
 				},
 			}),
-			"instance_id": resourceenhancer.Attribute(ctx, schema.StringAttribute{
-				MarkdownDescription: "The id of the instance to snapshot.",
-				Required:            true,
+			"source_instance_id": resourceenhancer.Attribute(ctx, schema.StringAttribute{
+				MarkdownDescription: "The id of the source instance from which this snapshot was derived.",
+				Optional:            true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
+			}),
+			"source_snapshot_id": resourceenhancer.Attribute(ctx, schema.StringAttribute{
+				MarkdownDescription: "The id of the source snapshot from which this snapsot was derived.",
+				Optional:            true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.RequiresReplace(),
 				},
@@ -122,25 +135,98 @@ func (r *SnapshotResource) Create(ctx context.Context, req resource.CreateReques
 	}
 	defer cancel()
 
-	body := genesiscloud.CreateInstanceSnapshotJSONRequestBody{}
-	body.Name = data.Name.ValueString()
-
-	instanceId := data.InstanceId.ValueString()
-
-	response, err := r.client.CreateInstanceSnapshotWithResponse(ctx, instanceId, body)
-	if err != nil {
-		resp.Diagnostics.AddError("Client Error", generateErrorMessage("create snapshot", err))
+	if data.SourceInstanceId.IsNull() && data.SourceSnapshotId.IsNull() {
+		resp.Diagnostics.AddError(
+			"Invalid Configuration",
+			"Either 'source_instance_id' or 'source_snapshot_id' must be specified.",
+		)
 		return
 	}
 
-	snapshotResponse := response.JSON201
-	if snapshotResponse == nil {
-		resp.Diagnostics.AddError("Client Error", generateClientErrorMessage("create snapshot", ErrorResponse{
-			Body:         response.Body,
-			HTTPResponse: response.HTTPResponse,
-			Error:        response.JSONDefault,
-		}))
+	if !data.SourceInstanceId.IsNull() && !data.SourceSnapshotId.IsNull() {
+		resp.Diagnostics.AddError(
+			"Invalid Configuration",
+			"Can only specify either 'source_instance_id' or 'source_snapshot_id', not both at the same time.",
+		)
 		return
+	}
+
+	var snapshotResponse *genesiscloud.SingleSnapshotResponse
+
+	if !data.SourceInstanceId.IsNull() {
+		if data.Region.ValueString() != "" {
+			resp.Diagnostics.AddError(
+				"Invalid Configuration",
+				"When specifying a source instance, the 'region' specification won't take effect",
+			)
+			return
+
+		}
+		body := genesiscloud.CreateInstanceSnapshotJSONRequestBody{}
+
+		body.Name = data.Name.ValueString()
+
+		instanceId := data.SourceInstanceId.ValueString()
+
+		if !data.ReplicatedRegion.IsNull() {
+			body.ReplicatedRegion = pointer(genesiscloud.Region(data.ReplicatedRegion.ValueString()))
+		}
+
+		response, err := r.client.CreateInstanceSnapshotWithResponse(ctx, instanceId, body)
+		if err != nil {
+			resp.Diagnostics.AddError("Client Error", generateErrorMessage("create snapshot", err))
+			return
+		}
+
+		snapshotResponse = response.JSON201
+		if snapshotResponse == nil {
+			resp.Diagnostics.AddError("Client Error", generateClientErrorMessage("create snapshot", ErrorResponse{
+				Body:         response.Body,
+				HTTPResponse: response.HTTPResponse,
+				Error:        response.JSONDefault,
+			}))
+			return
+		}
+	} else if !data.SourceSnapshotId.IsNull() {
+		if data.Region.IsNull() {
+			resp.Diagnostics.AddError(
+				"Invalid Configuration",
+				"When specifying `source_snapshot_id` as the snapshot source, you must be specified the `region`.",
+			)
+			return
+		}
+
+		if !data.ReplicatedRegion.IsNull() {
+			resp.Diagnostics.AddError(
+				"Invalid Configuration",
+				"When specifying `source_snapshot_id` as the snapshot source, you cannot specify the `replicated_region`.",
+			)
+			return
+		}
+
+		body := genesiscloud.CloneSnapshotJSONRequestBody{}
+
+		body.Name = data.Name.ValueString()
+
+		body.Region = genesiscloud.Region(data.Region.ValueString())
+
+		snapshotId := data.SourceSnapshotId.ValueString()
+
+		response, err := r.client.CloneSnapshotWithResponse(ctx, snapshotId, body)
+		if err != nil {
+			resp.Diagnostics.AddError("Client Error", generateErrorMessage("clone snapshot", err))
+			return
+		}
+
+		snapshotResponse = response.JSON201
+		if snapshotResponse == nil {
+			resp.Diagnostics.AddError("Client Error", generateClientErrorMessage("clone snapshot", ErrorResponse{
+				Body:         response.Body,
+				HTTPResponse: response.HTTPResponse,
+				Error:        response.JSONDefault,
+			}))
+			return
+		}
 	}
 
 	resp.Diagnostics.Append(data.PopulateFromClientResponse(ctx, &snapshotResponse.Snapshot)...)
