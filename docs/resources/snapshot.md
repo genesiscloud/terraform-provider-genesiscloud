@@ -30,21 +30,24 @@ resource "genesiscloud_snapshot" "example" {
 
 ### Required
 
-- `instance_id` (String) The id of the instance to snapshot.
-  - If the value of this attribute changes, the resource will be replaced.
 - `name` (String) The human-readable name for the snapshot.
 
 ### Optional
 
+- `region` (String) The region identifier. Should only be explicity specified when using the 'source_snapshot_id'.
+- `replicated_region` (String) Target region for snapshot replication. When specified, also creates a copy of the snapshot in the given region. If omitted, the snapshot exists only in the current region.
 - `retain_on_delete` (Boolean) Flag to retain the snapshot when the resource is deleted.
   - Sets the default value "false" if the attribute is not set.
+- `source_instance_id` (String) The id of the source instance from which this snapshot was derived.
+  - If the value of this attribute changes, the resource will be replaced.
+- `source_snapshot_id` (String) The id of the source snapshot from which this snapsot was derived.
+  - If the value of this attribute changes, the resource will be replaced.
 - `timeouts` (Attributes) (see [below for nested schema](#nestedatt--timeouts))
 
 ### Read-Only
 
 - `created_at` (String) The timestamp when this snapshot was created in RFC 3339.
 - `id` (String) The unique ID of the snapshot.
-- `region` (String) The region identifier.
 - `size` (Number) The storage size of this snapshot given in GiB.
 - `status` (String) The snapshot status.
 

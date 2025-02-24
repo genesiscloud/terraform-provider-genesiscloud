@@ -22,8 +22,14 @@ type SnapshotResourceModel struct {
 	// Region The region identifier.
 	Region types.String `tfsdk:"region"`
 
-	// InstanceId The id of the instance that was snapshotted.
-	InstanceId types.String `tfsdk:"instance_id"`
+	// SourceInstanceId The id of the source instance from which this snapshot was derived.
+	SourceInstanceId types.String `tfsdk:"source_instance_id"`
+
+	// SourceSnapshotId The id of the source snapshot from which this snapsot was derived.
+	SourceSnapshotId types.String `tfsdk:"source_snapshot_id"`
+
+	// ReplicatedRegion The region identifier when the snapshot should be replicated.
+	ReplicatedRegion types.String `tfsdk:"replicated_region"`
 
 	// Size The storage size of this snapshot given in GiB.
 	Size types.Int64 `tfsdk:"size"`
@@ -45,9 +51,15 @@ func (data *SnapshotResourceModel) PopulateFromClientResponse(ctx context.Contex
 	data.Id = types.StringValue(snapshot.Id)
 	data.Name = types.StringValue(snapshot.Name)
 	data.Region = types.StringValue(string(snapshot.Region))
-	data.InstanceId = types.StringValue(string(snapshot.ResourceId))
 	data.Size = types.Int64Value(int64(snapshot.Size))
 	data.Status = types.StringValue(string(snapshot.Status))
+
+	if snapshot.SourceInstanceId != nil {
+		data.SourceInstanceId = types.StringValue(*snapshot.SourceInstanceId)
+	}
+	if snapshot.SourceSnapshotId != nil {
+		data.SourceSnapshotId = types.StringValue(*snapshot.SourceSnapshotId)
+	}
 
 	return
 }
