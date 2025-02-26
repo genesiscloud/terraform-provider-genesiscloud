@@ -372,7 +372,7 @@ func (r *InstanceResource) Create(ctx context.Context, req resource.CreateReques
 		}
 
 		status := instanceResponse.Instance.Status
-		if status == "active" || status == "error" {
+		if status == genesiscloud.InstanceStatusActive || status == genesiscloud.InstanceStatusError {
 			resp.Diagnostics.Append(data.PopulateFromClientResponse(ctx, &instanceResponse.Instance)...)
 			if resp.Diagnostics.HasError() {
 				return
@@ -384,7 +384,7 @@ func (r *InstanceResource) Create(ctx context.Context, req resource.CreateReques
 				return
 			}
 
-			if status == "error" {
+			if status == genesiscloud.InstanceStatusError {
 				resp.Diagnostics.AddError("Provisioning Error", generateErrorMessage("polling instance", ErrResourceInErrorState))
 			}
 			return

@@ -270,7 +270,7 @@ func (r *SnapshotResource) Create(ctx context.Context, req resource.CreateReques
 		}
 
 		status := snapshotResponse.Snapshot.Status
-		if status == "created" || status == "active" || status == "error" {
+		if status == genesiscloud.SnapshotStatusCreated || status == genesiscloud.SnapshotStatusError {
 			resp.Diagnostics.Append(data.PopulateFromClientResponse(ctx, &snapshotResponse.Snapshot)...)
 			if resp.Diagnostics.HasError() {
 				return
@@ -282,7 +282,7 @@ func (r *SnapshotResource) Create(ctx context.Context, req resource.CreateReques
 				return
 			}
 
-			if status == "error" {
+			if status == genesiscloud.SnapshotStatusError {
 				resp.Diagnostics.AddError("Provisioning Error", generateErrorMessage("polling snapshot", ErrResourceInErrorState))
 			}
 			return
