@@ -202,7 +202,7 @@ func (r *FloatingIPResource) Create(ctx context.Context, req resource.CreateRequ
 		}
 
 		status := floatingIPResponse.FloatingIp.Status
-		if status == "created" || status == "error" {
+		if status == genesiscloud.FloatingIpStatusCreated || status == genesiscloud.FloatingIpStatusError {
 			resp.Diagnostics.Append(data.PopulateFromClientResponse(ctx, &floatingIPResponse.FloatingIp)...)
 			if resp.Diagnostics.HasError() {
 				return
@@ -214,7 +214,7 @@ func (r *FloatingIPResource) Create(ctx context.Context, req resource.CreateRequ
 				return
 			}
 
-			if status == "error" {
+			if status == genesiscloud.FloatingIpStatusError {
 				resp.Diagnostics.AddError("Provisioning Error", generateErrorMessage("polling floatingIP", ErrResourceInErrorState))
 			}
 			return

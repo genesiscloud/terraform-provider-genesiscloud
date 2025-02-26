@@ -203,7 +203,7 @@ func (r *VolumeResource) Create(ctx context.Context, req resource.CreateRequest,
 		}
 
 		status := volumeResponse.Volume.Status
-		if status == "created" || status == "available" || status == "in-use" || status == "error" {
+		if status == genesiscloud.VolumeStatusCreated || status == genesiscloud.VolumeStatusError {
 			resp.Diagnostics.Append(data.PopulateFromClientResponse(ctx, &volumeResponse.Volume)...)
 			if resp.Diagnostics.HasError() {
 				return
@@ -215,7 +215,7 @@ func (r *VolumeResource) Create(ctx context.Context, req resource.CreateRequest,
 				return
 			}
 
-			if status == "error" {
+			if status == genesiscloud.VolumeStatusError {
 				resp.Diagnostics.AddError("Provisioning Error", generateErrorMessage("polling volume", ErrResourceInErrorState))
 			}
 			return
@@ -346,7 +346,6 @@ func (r *VolumeResource) Delete(ctx context.Context, req resource.DeleteRequest,
 	}
 
 	response, err := r.client.DeleteVolumeWithResponse(ctx, volumeId)
-
 	if err != nil {
 		resp.Diagnostics.AddError("Client Error", generateErrorMessage("delete volume", err))
 		return

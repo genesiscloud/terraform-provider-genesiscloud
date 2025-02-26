@@ -220,7 +220,7 @@ func (r *FilesystemResource) Create(ctx context.Context, req resource.CreateRequ
 		}
 
 		status := filesystemResponse.Filesystem.Status
-		if status == "created" || status == "error" {
+		if status == genesiscloud.FilesystemStatusCreated || status == genesiscloud.FilesystemStatusError {
 			resp.Diagnostics.Append(data.PopulateFromClientResponse(ctx, &filesystemResponse.Filesystem)...)
 			if resp.Diagnostics.HasError() {
 				return
@@ -232,7 +232,7 @@ func (r *FilesystemResource) Create(ctx context.Context, req resource.CreateRequ
 				return
 			}
 
-			if status == "error" {
+			if status == genesiscloud.FilesystemStatusError {
 				resp.Diagnostics.AddError("Provisioning Error", generateErrorMessage("polling filesystem", ErrResourceInErrorState))
 			}
 			return

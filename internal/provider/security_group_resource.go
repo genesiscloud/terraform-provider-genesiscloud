@@ -239,7 +239,7 @@ func (r *SecurityGroupResource) Create(ctx context.Context, req resource.CreateR
 		}
 
 		status := securityGroupResponse.SecurityGroup.Status
-		if status == "created" || status == "error" {
+		if status == genesiscloud.SecurityGroupStatusCreated || status == genesiscloud.SecurityGroupStatusError {
 			resp.Diagnostics.Append(data.PopulateFromClientResponse(ctx, &securityGroupResponse.SecurityGroup)...)
 			if resp.Diagnostics.HasError() {
 				return
@@ -251,7 +251,7 @@ func (r *SecurityGroupResource) Create(ctx context.Context, req resource.CreateR
 				return
 			}
 
-			if status == "error" {
+			if status == genesiscloud.SecurityGroupStatusError {
 				resp.Diagnostics.AddError("Provisioning Error", generateErrorMessage("polling security_group", ErrResourceInErrorState))
 			}
 			return
@@ -404,7 +404,7 @@ func (r *SecurityGroupResource) Update(ctx context.Context, req resource.UpdateR
 		}
 
 		status := securityGroupResponse.SecurityGroup.Status
-		if status == "created" || status == "error" {
+		if status == genesiscloud.SecurityGroupStatusCreated || status == genesiscloud.SecurityGroupStatusError {
 			resp.Diagnostics.Append(data.PopulateFromClientResponse(ctx, &securityGroupResponse.SecurityGroup)...)
 			if resp.Diagnostics.HasError() {
 				return
@@ -416,7 +416,7 @@ func (r *SecurityGroupResource) Update(ctx context.Context, req resource.UpdateR
 				return
 			}
 
-			if status == "error" {
+			if status == genesiscloud.SecurityGroupStatusError {
 				resp.Diagnostics.AddError("Provisioning Error", generateErrorMessage("polling security_group", ErrResourceInErrorState))
 			}
 			return
