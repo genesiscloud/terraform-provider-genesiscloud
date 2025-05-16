@@ -35,7 +35,7 @@ resource "genesiscloud_security_group" "allow-https" {
 - `name` (String) The human-readable name for the security group.
 - `region` (String) The region identifier.
   - If the value of this attribute changes, the resource will be replaced.
-  - The value must be one of: ["EUC-DE-MUC-1" "NORD-NO-KRS-1"].
+  - The value must be one of: ["EUC-DE-MUC-1" "EUW-GB-MNC-1" "EUW-NL-AMS-1" "NA-CA-FTS-1" "NA-CA-MNZ-1" "NA-CA-PRG-1" "NORD-NO-KRS-1"].
 - `rules` (Attributes List) (see [below for nested schema](#nestedatt--rules))
 
 ### Optional
