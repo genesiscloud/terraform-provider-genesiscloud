@@ -273,6 +273,7 @@ func (r *InstanceResource) Create(ctx context.Context, req resource.CreateReques
 
 	if !data.ReservationId.IsNull() && !data.ReservationId.IsUnknown() {
 		body.ReservationId = data.ReservationId.ValueStringPointer()
+		body.BillingType = pointer(genesiscloud.InstanceBillingTypeReserved)
 	}
 
 	if data.Metadata != nil {
