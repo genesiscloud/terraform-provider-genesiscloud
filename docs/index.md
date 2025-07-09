@@ -98,7 +98,7 @@ resource "genesiscloud_instance" "instance" {
   name   = "terraform-instance"
   region = local.region
 
-  image = "ubuntu-22.04"
+  image = "ubuntu-24.04"
   type  = "vcpu-4_memory-16g_nvidia-rtx-3080-1"
 
   ssh_key_ids = [
